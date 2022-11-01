@@ -17,7 +17,7 @@ export const GithubUser = () => {
     return () => {
       localStorage.removeItem(params.user)
     }
-  }, [])
+  }, [GithubApi, params.user])
 
   useEffect(() => {
     localStorage[params.user] = JSON.stringify(data)
@@ -47,7 +47,7 @@ export const GithubUser = () => {
     .then(response => console.log("Organizations",response))
     .catch(e => console.error(e))
     
-  }, [data])
+  }, [data, GithubApi, params.user])
   
   return (
     <div>GithubUser</div>
