@@ -7,7 +7,7 @@ const GithubApi = require("../API/GithubApi")
 
 const initalState = {
   list : localStorage["GithubUser"]? JSON.parse(localStorage["GithubUser"]) : [],
-  searchBar : ["Type a Username"]
+  searchBar : localStorage["GithubUser"]? JSON.parse(localStorage["GithubUser"]) : ["Type a Username"]
 }
 
 const reducer = (state, action) => {
