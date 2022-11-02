@@ -5,10 +5,6 @@ const options = {
   }
 }
 
-fetch("https://dog.ceo/api/breeds/image/random")
-.then(response => response.json())
-.then(response => console.log(response))
-
 export const findUser = (user) => fetch(`https://api.github.com/search/users?q=${user}`, options)
 
 export const getCommits = () => fetch(`https://api.github.com/repos/Tayomide/hci-project-one/stats/participation`, options)
