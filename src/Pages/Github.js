@@ -72,7 +72,7 @@ export const Github = () => {
       }
     }
     
-  }, [input])
+  }, [input, state.list])
 
   useEffect(() => {
     if(!loading)inputRef.current.focus()
