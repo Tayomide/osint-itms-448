@@ -157,6 +157,10 @@ const Container = styled.div`
       }
     }
   }
+  @media screen and (max-width: 44em){
+    width: 100%;
+    top: 0;
+  }
 `
 
 const SearchComponent = styled.div`
@@ -176,5 +180,6 @@ const SearchComponent = styled.div`
     padding: 0;
     height: auto;
     font-size: 1.2em;
+    width: inherit;
   }
 `
