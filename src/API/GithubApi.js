@@ -5,6 +5,53 @@ const options = {
   }
 }
 
+// const TOKEN = process.env.GITHUB_TOKEN
+
+// export async function retrieveContributionData(userName: string): Promise<Externals.Github.ApiResponse> {
+  
+//   const res = await fetch('https://api.github.com/graphql', {
+//     method: 'POST',
+//     headers: {
+//       Authorization: `Bearer ${TOKEN}`,
+//     },
+//     body: JSON.stringify(body)
+//   })
+//   return res.json()
+// }
+
+export const getCommitGraph = (user) => {
+  const query = `
+    query($userName:String!) {
+      user(login: $userName){
+        contributionsCollection {
+          contributionCalendar {
+            totalContributions
+            weeks {
+              contributionDays {
+                contributionCount
+                date
+              }
+            }
+          }
+        }
+      }
+    }
+  `
+  const variables = `
+    {
+      "userName": "${user}"
+    }
+  `
+  const body = {
+    query,
+    variables
+  }
+  return fetch('https://api.github.com/graphql', {method: "POST", body: JSON.stringify(body), headers: {
+    "Authorization": "Bearer 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"
+  }
+  })
+}
+
 export const findUser = (user) => fetch(`https://api.github.com/search/users?q=${user}`, options)
 
 export const getCommits = () => fetch(`https://api.github.com/repos/Tayomide/hci-project-one/stats/participation`, options)
