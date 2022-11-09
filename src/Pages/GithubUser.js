@@ -3,6 +3,7 @@ import { useState, useEffect } from "react"
 import { GithubUserHeader } from "../Components/GithubUserHeader"
 import styled from "styled-components"
 import { GithubStat } from "../Components/GithubStat"
+import { GithubChart } from "../Components/GithubChart"
 
 export const GithubUser = () => {
   const GithubApi = require("../API/GithubApi")
@@ -76,7 +77,6 @@ export const GithubUser = () => {
         userName={data?.login}
         data={fileData}
         url={data?.html_url}
-        // img={data.avatar_url}
         />
         <GithubStatContainer>
           <GithubStat
@@ -92,6 +92,7 @@ export const GithubUser = () => {
           stat={data.following}
           />
         </GithubStatContainer>
+        <GithubChart user={[params.user]}/>
       </>:
       <p>Loading...</p>
     }
