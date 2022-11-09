@@ -75,6 +75,7 @@ export const GithubUser = () => {
         <GithubUserHeader 
         userName={data?.login}
         data={fileData}
+        url={data?.html_url}
         // img={data.avatar_url}
         />
         <GithubStatContainer>

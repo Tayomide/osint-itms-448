@@ -2,7 +2,7 @@ import styled from "styled-components"
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { Link } from "react-router-dom";
 
-export const GithubUserHeader = ({userName, data}) => {
+export const GithubUserHeader = ({userName, data, url}) => {
   // JSON.stringify(data, null, 2)
   // "\n // Followers \n" + JSON.stringify(response, null, 2)
   const handleClickOne = (e) => {
@@ -35,7 +35,7 @@ export const GithubUserHeader = ({userName, data}) => {
           width: 35,
           height: 35
         }}/>
-        <p>{userName}</p>
+        <a className="name" href={url} target="_blank" rel="noreferrer">{userName}</a>
       </div>
       
       <div className="link-container">
@@ -68,12 +68,13 @@ const Container = styled.nav`
   svg{
     margin: 0 0.3em;
   }
-  p{
+  .name{
     height: max-content;
     font-size: 1.3em;
     font-weight: bold;
+    color: #000000;
   }
-  a{
+  a:not([class="name"]){
     display: flex;
     align-items: center;
     height: 80%;
