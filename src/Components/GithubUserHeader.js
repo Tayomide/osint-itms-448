@@ -13,7 +13,7 @@ export const GithubUserHeader = ({userName, data}) => {
     }
     var file = new Blob([content], {type: "text/plain"});
     a.href = URL.createObjectURL(file);
-    a.download = "OSINT_Data_" + new Date().getTime();
+    a.download = userName + "_OSINT_Data";
     a.click();
   }
 
@@ -24,7 +24,7 @@ export const GithubUserHeader = ({userName, data}) => {
       content = `// ${name} \n` + JSON.stringify(data[name], null, 2)
       var file = new Blob([content], {type: "application/json"});
       a.href = URL.createObjectURL(file);
-      a.download = name + new Date().getTime();
+      a.download = userName + "_" + name;
       a.click();
     }
   }
