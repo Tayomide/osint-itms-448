@@ -33,7 +33,6 @@ export const GithubUser = () => {
 
   useEffect(() => {
     localStorage[params.user] = JSON.stringify(data)
-    console.log(data)
 
   }, [data, GithubApi, params.user])
 

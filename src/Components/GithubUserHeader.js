@@ -51,7 +51,7 @@ export const GithubUserHeader = ({userName, data}) => {
 const Container = styled.nav`
   display: flex;
   flex-direction: row;
-  height: 3em;
+  height: 3em!important;
   width: 100%;
   padding: 0 0.2em;
   align-items: center;
