@@ -1,6 +1,5 @@
 import styled from "styled-components"
 import GitHubIcon from '@mui/icons-material/GitHub';
-import { Link } from "react-router-dom";
 
 export const GithubUserHeader = ({userName, data, url}) => {
   // JSON.stringify(data, null, 2)
@@ -39,11 +38,9 @@ export const GithubUserHeader = ({userName, data, url}) => {
       </div>
       
       <div className="link-container">
-        <Link onClick={handleClickOne}>Download all datatest</Link>
-        <Link onClick={handleClickMultiple}>Download individual dataset</Link>
+        <button onClick={handleClickOne}>Download all datatest</button>
+        <button onClick={handleClickMultiple}>Download individual dataset</button>
       </div>
-      
-      {/* <img src={img} alt="profile"></img> */}
     </Container>
   )
 }
@@ -74,20 +71,16 @@ const Container = styled.nav`
     font-weight: bold;
     color: #000000;
   }
-  a:not([class="name"]){
-    display: flex;
+  button:not([class="name"]){
     align-items: center;
-    height: 80%;
     background-color: #000000;
+    border-radius: 0.2em;
     color: #ffffff;
-    font-size: bold;
+    display: flex;
+    font-size: 1em;
+    height: 80%;
     margin-left: 1em;
     padding: 0 1em;
-    border-radius: 0.2em;
   }
-  /* img{
-    border-radius: 50%;
-    padding: 0.3em;
-  } */
 `
 
