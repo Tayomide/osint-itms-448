@@ -56,19 +56,17 @@ export const GithubCompare = () => {
       </div>
         {userAdd &&
         <>
-        {newUser ? 
-          <div className="add-user-input">
+        {newUser ?
+          <div className="add-user-input" tabIndex="2" onBlur={(e) => {if(!e.currentTarget.contains(e.relatedTarget))setNewUser(false)}}>
             <input type="text" value={user}
             onChange={(e) => setUser(e.target.value)}
-            onBlur={() => setNewUser(false)}
             onKeyDown={(e) => {if(e.code === "Enter")addUser()}}
             ref={inputRef}/>
-            <button><AddIcon sx={{
+            <button onClick={addUser}><AddIcon sx={{
             aspectRatio: "1 / 1",
             height: "inherit",
             fontWeight: 'bold'
           }}
-          onClick={addUser}
           /></button>
           </div> :
           <div className="add-user-button">
