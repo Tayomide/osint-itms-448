@@ -21,7 +21,9 @@ export const GithubCompare = () => {
     GithubApi.getUser(user)
     .then(response => response.clone().json())
     .then(response => {
-      if((!response["message"] || response["message"] !== "Not Found") && !userList.includes(tempUser[0].toUpperCase() + tempUser.slice(1).toLowerCase())){
+      if((!response["message"] || response["message"] !== "Not Found") &&
+      response["type"] !== "Organization" &&
+      !userList.includes(tempUser[0].toUpperCase() + tempUser.slice(1).toLowerCase())){
         setUserList([...userList, tempUser[0].toUpperCase() + tempUser.slice(1).toLowerCase()])
       }
     })
