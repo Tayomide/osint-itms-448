@@ -92,7 +92,7 @@ export const GithubUser = () => {
           stat={data.following}
           />
         </GithubStatContainer>
-        <GithubChart user={[params.user]}/>
+        <GithubChart user={[params.user]} type="commits"/>
       </>:
       <p>Loading...</p>
     }
