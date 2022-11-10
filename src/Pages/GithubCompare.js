@@ -10,6 +10,9 @@ export const GithubCompare = () => {
   const [userList, setUserList] = useState([])
   const [newUser, setNewUser] = useState(false)
   const [userAdd, setUserAdd] = useState(true)
+  const [chartType, setChartType] = useState("commits")
+  const chartList = ["commits", "followers", "following", "repositories"]
+  const [updateChart, setUpdateChart] = useState(false)
   const inputRef = useRef()
   const addUser = () => {
     setNewUser(false)
@@ -25,22 +28,41 @@ export const GithubCompare = () => {
     .catch(e => console.error(e))
   }
 
+  const updateChartType = (type) => {
+    setUpdateChart(false)
+    setChartType(type)
+  }
+
   useEffect(() => {
     if(userList.length >= 5)setUserAdd(false)
   }, [userList])
 
   useEffect(() => {
     if(newUser)inputRef.current.focus()
+    else setUser("")
   }, [newUser])
 
   return (
     <Container>
       <InputContainer>
+      <div className="chart-type-dropdown" onClick={() => setUpdateChart(!updateChart)} tabIndex="1" onBlur={() => setUpdateChart(false)}>
+        <p>{chartType}</p>
+        <button></button>
+        {updateChart && 
+          <ul>
+            {chartList.map((type, idx) => <li key={idx} onClick={() => updateChartType(type)}><p>{type}</p></li>)}
+          </ul>
+        }
+      </div>
         {userAdd &&
         <>
         {newUser ? 
           <div className="add-user-input">
-            <input type="text" value={user} onChange={(e) => setUser(e.target.value)} ref={inputRef}/>
+            <input type="text" value={user}
+            onChange={(e) => setUser(e.target.value)}
+            onBlur={() => setNewUser(false)}
+            onKeyDown={(e) => {if(e.code === "Enter")addUser()}}
+            ref={inputRef}/>
             <button><AddIcon sx={{
             aspectRatio: "1 / 1",
             height: "inherit",
@@ -66,7 +88,7 @@ export const GithubCompare = () => {
         )}
         
       </InputContainer>
-      { userList.length > 0 && < GithubChart user={userList}/>}
+      { userList.length > 0 && < GithubChart user={userList} type={chartType}/>}
       
     </Container>
   )
@@ -77,14 +99,61 @@ const InputContainer = styled.div`
   flex-direction: row;
   height: 4.3em;
   padding: 1em;
-  gap: 2em; //Remove this eventually
-  .add-user-input{
-    height: 2.3em;
+  gap: 1.25em; //Remove this eventually
+  .chart-type-dropdown{
+    align-items: center;
+    background-color: #efefef;
+    border-radius: 0.2em 0.2em 0.2em 0.2em;
+    cursor: pointer;
     display: flex;
     flex-direction: row;
+    height: 2.3em;
+    justify-content: space-between;
+    padding: 0 1em;
+    position: relative;
+    width: 10em;
+    ul{
+      background-color: inherit;
+      border-radius: 0.2em 0.2em 0.2em 0.2em;
+      height: max-content;
+      position: absolute;
+      right: 0;
+      top: 3em;
+      width: inherit;
+      li{
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        height: 2.3em;
+        p{
+          padding: 0 0 0 1em;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          width: 100%;
+        }
+        :hover{
+          background-color: #d4d3d3;
+        }
+      }
+    }
+    p{
+      height: max-content;
+      text-transform: capitalize;
+    }
+    button {
+      width: 0.8em;
+      height: 0.5em;
+      background-color: black;
+      clip-path: polygon(100% 0%, 0 0%, 50% 100%);
+    }
+  }
+  .add-user-input{
     align-items: center;
-    border-radius: 0.2em 0.2em 0.2em 0.2em;
     background-color: #efefef;
+    border-radius: 0.2em 0.2em 0.2em 0.2em;
+    display: flex;
+    flex-direction: row;
+    height: 2.3em;
     input[type="text"]{
       background-color: transparent;
       font-size: 1em;
