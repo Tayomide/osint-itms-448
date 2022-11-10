@@ -19,7 +19,7 @@ const options = {
 //   return res.json()
 // }
 
-export const getCommitGraph = (user) => {
+export const getCommitGraph = async (user) => {
   const query = `
     query($userName:String!) {
       user(login: $userName){
@@ -42,12 +42,19 @@ export const getCommitGraph = (user) => {
       "userName": "${user}"
     }
   `
+
+  let Authorization;
+
+  await fetch(`/.netlify/functions/github`, options)
+  .then(response => response.json())
+  .then(response => Authorization = `Bearer ${response.GITHUB_TOKEN}`)
+
   const body = {
     query,
     variables
   }
   return fetch('https://api.github.com/graphql', {method: "POST", body: JSON.stringify(body), headers: {
-    "Authorization": "Bearer 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"
+    "Authorization": Authorization
   }
   })
 }
@@ -63,3 +70,7 @@ export const getOrgs = (user) => fetch(`https://api.github.com/users/${user}/org
 export const getRepos = (user) => fetch(`https://api.github.com/users/${user}/repos`, options)
 
 export const getUser = (user) => fetch(`https://api.github.com/users/${user}`, options)
+
+export const getVariables = () => fetch(`/.netlify/functions/github`, options)
+
+// 
