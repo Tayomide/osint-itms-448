@@ -28,7 +28,7 @@ export const getData = async (user, graph) => {
   const dataset = []
   switch(graph){
     case "commits":
-      for(let i = 0; i < 52; i++)labels[i] = "Week" + i.toString()
+      for(let i = 1; i < 53; i++)labels[i] = "Week" + i.toString()
       break;
     case "followers":
       labels[0] = "Followers"
