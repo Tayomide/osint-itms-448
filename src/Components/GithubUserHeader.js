@@ -2,8 +2,6 @@ import styled from "styled-components"
 import GitHubIcon from '@mui/icons-material/GitHub';
 
 export const GithubUserHeader = ({userName, data, url}) => {
-  // JSON.stringify(data, null, 2)
-  // "\n // Followers \n" + JSON.stringify(response, null, 2)
   const handleClickOne = (e) => {
     var a = document.createElement("a");
     let content = ""
