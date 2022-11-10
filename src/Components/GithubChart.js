@@ -20,16 +20,13 @@ ChartJS.register(
   Legend
 );
 
-export const GithubChart = ({user}) => {
-
+export const GithubChart = ({user, type}) => {
   const CommitGraph = require("../Chart/GithubCommitChart")
-  console.log("I was meant to be yours.")
   const [data, setData] = useState(null)
   useEffect(() => {
-    console.log("rerender")
-    CommitGraph.getData(user)
+    CommitGraph.getData(user, type)
     .then(response => setData(response))
-  }, [CommitGraph, user])
+  }, [CommitGraph, user, type])
   
   
   return (
