@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from "react"
 import { GithubChart } from "../Components/GithubChart"
 import AddIcon from '@mui/icons-material/Add';
 import GitHubIcon from '@mui/icons-material/GitHub';
+import ClearIcon from '@mui/icons-material/Clear';
+import { Link } from "react-router-dom"
 
 export const GithubCompare = () => {
   const GithubApi = require("../API/GithubApi")
@@ -34,6 +36,10 @@ export const GithubCompare = () => {
     setUpdateChart(false)
     setChartType(type)
   }
+
+  const deleteUser = (userName) => {
+    setUserList(userList.filter(name => name !== userName[0].toUpperCase() + userName.slice(1).toLowerCase()))
+  } 
 
   useEffect(() => {
     if(userList.length >= 5)setUserAdd(false)
@@ -78,12 +84,21 @@ export const GithubCompare = () => {
         </>}
         {userList.map((userName, idx) => 
           <div className="user" key={idx}>
-          <GitHubIcon sx={{
-            aspectRatio: "1 / 1",
-            height: "inherit",
-            fontWeight: 'bold'
-          }}/>
-            <p>{userName}</p>
+            <Link to={"../github/" + userName.toLowerCase()}>
+              <GitHubIcon sx={{
+                aspectRatio: "1 / 1",
+                width: "max-content",
+                fontWeight: 'bold'
+              }}/>
+              <p>{userName}</p>
+            </Link>
+            <ClearIcon className="delete-user" sx={{
+              aspectRatio: "1 / 1",
+              height: "inherit",
+              fontWeight: 'bold'
+            }}
+            onClick={() => deleteUser(userName)}
+            />
           </div>
         )}
         
@@ -191,11 +206,21 @@ const InputContainer = styled.div`
     align-items: center;
     background-color: #efefef;
     border-radius: 0.2em 0.2em 0.2em 0.2em;
+    cursor: pointer;
     display: flex;
     flex-direction: row;
     height: 2.3em;
     padding: 0 0 0 0.4em;
+    position: relative;
     width: 8em;
+    z-index: 0;
+    > a{
+      align-items: center;
+      color: inherit;
+      display: inline-flex;
+      flex-direction: row;
+      flex: 1
+    }
     p{
       font-size: 1em;
       font-weight: bold;
@@ -204,6 +229,22 @@ const InputContainer = styled.div`
       max-width: 6em;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+    .delete-user{
+      background: inherit;
+      display: none;
+      position: absolute;
+      right: 0;
+      z-index: 2;
+    }
+    :hover > .delete-user{
+      display: block;
+      :hover{
+        height: auto;
+        border-radius: 50%;
+        background-color: #dedddd;
+      }
+      
     }
   }
 `
