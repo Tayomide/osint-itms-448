@@ -4,10 +4,8 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 export const GithubUserHeader = ({userName, data, url}) => {
   const handleClickOne = (e) => {
     var a = document.createElement("a");
-    let content = ""
-    for(let name in data){
-      content += `// ${name} \n` + JSON.stringify(data[name], null, 2) + "\n"
-    }
+    let data2 = Object.values(data).map(name => JSON.stringify(name, null, 2))
+    let content = "{\n" + data2.join(",\n") + "\n}"
     var file = new Blob([content], {type: "text/plain"});
     a.href = URL.createObjectURL(file);
     a.download = userName + "_OSINT_Data";
@@ -18,7 +16,7 @@ export const GithubUserHeader = ({userName, data, url}) => {
     var a = document.createElement("a");
     let content = ""
     for(let name in data){
-      content = `// ${name} \n` + JSON.stringify(data[name], null, 2)
+      content = JSON.stringify(data[name], null, 2)
       var file = new Blob([content], {type: "application/json"});
       a.href = URL.createObjectURL(file);
       a.download = userName + "_" + name;

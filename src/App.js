@@ -4,10 +4,12 @@ import { Home } from "./Pages/Home"
 import { GithubUser } from "./Pages/GithubUser";
 import { Github } from "./Pages/Github";
 import { GithubCompare } from "./Pages/GithubCompare";
+import { Navbar } from "./Pages/Navbar";
 
 const App = () => {
   return (
     <Container>
+      <Navbar />
       <Router>
         <Routes>
           <Route exact path="/" element={ <Home /> } />
@@ -25,7 +27,7 @@ export default App;
 const Container = styled.div`
   height: 100%;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: flex-start;
   position: relative;
 `

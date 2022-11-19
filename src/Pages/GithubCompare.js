@@ -4,17 +4,20 @@ import { GithubChart } from "../Components/GithubChart"
 import AddIcon from '@mui/icons-material/Add';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import ClearIcon from '@mui/icons-material/Clear';
+import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import { Link } from "react-router-dom"
+import { DropdownMenu } from "../Components/DropdownMenu";
 
 export const GithubCompare = () => {
   const GithubApi = require("../API/GithubApi")
+  const [data, setData] = useState({message:"Loading..."})
   const [user, setUser] = useState("")
-  const [userList, setUserList] = useState([])
+  const [userList, setUserList] = useState(localStorage["userList"] ? JSON.parse(localStorage["userList"]) : [])
   const [newUser, setNewUser] = useState(false)
   const [userAdd, setUserAdd] = useState(true)
   const [chartType, setChartType] = useState("commits")
+  const [queryType, setQueryType] = useState("")
   const chartList = ["commits", "followers", "following", "repositories"]
-  const [updateChart, setUpdateChart] = useState(false)
   const inputRef = useRef()
   const addUser = () => {
     setNewUser(false)
@@ -32,17 +35,20 @@ export const GithubCompare = () => {
     .catch(e => console.error(e))
   }
 
-  const updateChartType = (type) => {
-    setUpdateChart(false)
-    setChartType(type)
-  }
-
   const deleteUser = (userName) => {
     setUserList(userList.filter(name => name !== userName[0].toUpperCase() + userName.slice(1).toLowerCase()))
-  } 
+  }
 
   useEffect(() => {
+    if(localStorage["userList"]){
+      setUserList(JSON.parse(localStorage["userList"]))
+    }
+  }, [])
+
+  useEffect(() => {
+    if(userList.length >= 1)setQueryType(userList[0])
     if(userList.length >= 5)setUserAdd(false)
+    localStorage["userList"] = JSON.stringify(userList)
   }, [userList])
 
   useEffect(() => {
@@ -50,18 +56,74 @@ export const GithubCompare = () => {
     else setUser("")
   }, [newUser])
 
+  useEffect(() => {
+    if(queryType !== ""){
+      const dataFile = {}
+
+      // Get User
+      GithubApi.getUser(queryType)
+      .then(response => response.clone().json())
+      .then(response => dataFile["User_Data"] = response)
+      .catch(e => console.error(e))
+
+      // Get Commits
+      GithubApi.getCommits()
+      .then(response => response.clone().json())
+      .then(response => dataFile["Commits"] = response)
+      .catch(e => console.error(e))
+
+      // Get Followers
+      GithubApi.getFollowers(queryType)
+      .then(response => response.clone().json())
+      .then(response => dataFile["Followers"] = response)
+      .catch(e => console.error(e))
+
+      // Get Repos
+      GithubApi.getRepos(queryType)
+      .then(response => response.clone().json())
+      .then(response => dataFile["Repositories"] = response)
+      .catch(e => console.error(e))
+
+      // Get Organizations
+      GithubApi.getOrgs(queryType)
+      .then(response => response.clone().json())
+      .then(response => dataFile["Organizations"] = response)
+      .catch(e => console.error(e))
+
+      setData(dataFile)
+    }
+  }, [queryType, GithubApi])
+
+  const handleClickOne = (e) => {
+    var a = document.createElement("a");
+    let data2 = Object.values(data).map(name => JSON.stringify(name, null, 2))
+    let content = "{\n" + data2.join(",\n") + "\n}"
+    var file = new Blob([content], {type: "text/plain"});
+    a.href = URL.createObjectURL(file);
+    a.download = queryType + "_OSINT_Data";
+    a.click();
+  }
+
+  const handleClickMultiple = (e) => {
+    var a = document.createElement("a");
+    let content = ""
+    for(let name in data){
+      content = JSON.stringify(data[name], null, 2)
+      var file = new Blob([content], {type: "application/json"});
+      a.href = URL.createObjectURL(file);
+      a.download = queryType + "_" + name;
+      a.click();
+    }
+  }
+
   return (
     <Container>
       <InputContainer>
-      <div className="chart-type-dropdown" onClick={() => setUpdateChart(!updateChart)} tabIndex="1" onBlur={() => setUpdateChart(false)}>
-        <p>{chartType}</p>
-        <button></button>
-        {updateChart && 
-          <ul>
-            {chartList.map((type, idx) => <li key={idx} onClick={() => updateChartType(type)}><p>{type}</p></li>)}
-          </ul>
-        }
-      </div>
+      <DropdownMenu 
+        type={chartType}
+        setType={setChartType}
+        list={chartList}
+      />
         {userAdd &&
         <>
         {newUser ?
@@ -103,11 +165,86 @@ export const GithubCompare = () => {
         )}
         
       </InputContainer>
-      { userList.length > 0 && < GithubChart user={userList} type={chartType}/>}
+      { userList.length > 0 && <div className="content">
+        < GithubChart user={userList} type={chartType}/>
+        <div className="conditions">
+          <p>Github User Stat</p>
+          <ul>
+            <li>
+              <button onClick={handleClickOne}>All <FileDownloadOutlinedIcon /></button>
+              <button onClick={handleClickMultiple}><FileDownloadOutlinedIcon /></button>
+              <DropdownMenu
+                type={queryType}
+                setType={setQueryType}
+                list={userList}
+              />
+            </li>
+          </ul>
+        </div>
+      </div>}
       
     </Container>
   )
 }
+
+const Container = styled.div`
+  width: -webkit-fill-available;
+  width: -moz-available;
+  height: max-content;
+  .chart{
+    border: 1px solid #e7e7e7;
+    border-radius: 0.3em;
+    padding: 0.3em 0.4em;
+    margin: 0 0 0 1em;
+  }
+  .content{
+    display: flex;
+    flex-direction: row;
+    .chart{
+      height: 70vh;
+      width: calc(70vw - 5em);
+      canvas{
+        height: inherit!important;
+        width: inherit
+      }
+    }
+    .conditions{
+      width: 25vw;
+      height: max-content;
+      margin: 0 auto;
+      padding: 1em 1em;
+      border: 1px solid #e7e7e7;
+      border-radius: 0.3em;
+      *{
+        height: max-content;
+      }
+      > ul{
+        padding-top: 1em;
+        li{
+          display: flex;
+          flex-direction: row;
+          gap: 0.3em;
+          > button{
+            align-items: center;
+            border: 1px solid #e7e7e7;
+            border-radius: 0.3em;
+            display: inline-flex;
+            font-size: 1em;
+            font-weight: bold;
+            height: 2.3em;
+            justify-content: center;
+            padding: 0 0.4em 0 0.4em;
+          }
+          .dropdown{
+            height: auto;
+            max-width: 12em;
+            flex: 1;
+          }
+        }
+      }
+    }
+  }
+`
 
 const InputContainer = styled.div`
   display: flex;
@@ -115,53 +252,6 @@ const InputContainer = styled.div`
   height: 4.3em;
   padding: 1em;
   gap: 1.25em; //Remove this eventually
-  .chart-type-dropdown{
-    align-items: center;
-    background-color: #efefef;
-    border-radius: 0.2em 0.2em 0.2em 0.2em;
-    cursor: pointer;
-    display: flex;
-    flex-direction: row;
-    height: 2.3em;
-    justify-content: space-between;
-    padding: 0 1em;
-    position: relative;
-    width: 10em;
-    ul{
-      background-color: inherit;
-      border-radius: 0.2em 0.2em 0.2em 0.2em;
-      height: max-content;
-      position: absolute;
-      right: 0;
-      top: 3em;
-      width: inherit;
-      li{
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        height: 2.3em;
-        p{
-          padding: 0 0 0 1em;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          width: 100%;
-        }
-        :hover{
-          background-color: #d4d3d3;
-        }
-      }
-    }
-    p{
-      height: max-content;
-      text-transform: capitalize;
-    }
-    button {
-      width: 0.8em;
-      height: 0.5em;
-      background-color: black;
-      clip-path: polygon(100% 0%, 0 0%, 50% 100%);
-    }
-  }
   .add-user-input{
     align-items: center;
     background-color: #efefef;
@@ -245,17 +335,6 @@ const InputContainer = styled.div`
         background-color: #dedddd;
       }
       
-    }
-  }
-`
-
-const Container = styled.div`
-  .chart{
-    height: 80vh;
-    width: 80vw;
-    canvas{
-      height: inherit!important;
-      width: inherit
     }
   }
 `
