@@ -112,6 +112,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   position: absolute;
+  left: 30%;
   top: 10%;
   box-shadow: 1px 3px 6px 2px rgb(220 220 220);
   &.curve{
