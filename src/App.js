@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
-import { Home } from "./Pages/Home"
+// import { Home } from "./Pages/Home"
+import { GithubOrg } from "./Pages/GithubOrg";
 import { GithubUser } from "./Pages/GithubUser";
 import { Github } from "./Pages/Github";
 import { GithubCompare } from "./Pages/GithubCompare";
@@ -12,10 +13,11 @@ const App = () => {
       <Router>
         <Navbar />
         <Routes>
-          <Route exact path="/" element={ <Home /> } />
+          <Route exact path="/" element={ <Github /> } />
           <Route exact path="/github" element={ <Github />} />
           <Route exact path="/github/:user" element={ <GithubUser /> } />
           <Route exact path="github/compare" element={ <GithubCompare />} />
+          <Route exact path="github/org/:org" element={ <GithubOrg />} />
         </Routes>
       </Router>
     </Container>

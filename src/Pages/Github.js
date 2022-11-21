@@ -26,7 +26,6 @@ const reducer = (state, action) => {
 export const Github = () => {
   const [input, setInput] = useState("")
   const [state, dispatch] = useReducer(reducer, initalState)
-  const [loading, setLoading] = useState(false)
   const [display, setDisplay] = useState(false)
   const [mouse, setMouse] = useState(false)
   const inputRef = useRef()
@@ -56,27 +55,23 @@ export const Github = () => {
     if(input !== ""){
       dispatch({type: "input",value: input})
       if(!state.list.find(elem => elem.login.toLowerCase().includes(input.toLowerCase()))){
-        setLoading(true);
-        (async () => {
-          await GithubApi.findUser(input)
-          .then(response => response.json())
-          .then(response => {
-            if(typeof(response.items) === "object"){
-              localStorage["GithubUser"] = JSON.stringify([...state.list, ...response.items])
-              dispatch({type:"update",value:input, list:response.items})
-            }
-          })
-          .catch(e => dispatch({type:"update",value:"", list:[]}))
-          setLoading(false)
-        })()
+        GithubApi.findUser(input)
+        .then(response => response.json())
+        .then(response => {
+          if(typeof(response.items) === "object"){
+            localStorage["GithubUser"] = JSON.stringify([...state.list, ...response.items])
+            dispatch({type:"update",value:input, list:response.items})
+          }
+        })
+        .catch(e => dispatch({type:"update",value:"", list:[]}))
       }
     }
     
   }, [input, state.list])
 
   useEffect(() => {
-    if(!loading)inputRef.current.focus()
-  }, [loading])
+    console.log(state.searchBar)
+  }, [state])
 
   return (
     <Container onFocus={handleFocusChange} onBlur={handleBlurChange} onClick={() => inputRef.current.focus()} className={!display && "curve"}
@@ -84,13 +79,14 @@ export const Github = () => {
     >
       <SearchComponent>
         <SearchIcon />
-        <input id="search-username" type="text" onChange={handleInputChange} value={input} disabled={loading} ref={inputRef}/>
+        <input id="search-username" type="text" onChange={handleInputChange} value={input} ref={inputRef}/>
       </SearchComponent>
-      {loading && <ul><li className="no-result">Loading...</li></ul>}
+      {/* {loading && <ul><li className="no-result">Loading...</li></ul>} */}
       {<ul className={display ? "": "hide"}>
         {
-          (state.searchBar === [] && input && input !== "" && !loading) && (typeof(state.searchBar[0]) === "string" || state.searchBar[0]["login"]) ?
+          ((state.searchBar.length === 0 || state.searchBar[0] === "No result") && input && input !== "")?
             <li className="no-result">No Username like "{input}" on GitHub</li> :
+            input && input !== "" &&
             state.searchBar.map((items, key) =>
               <li key={key}>
               <Link to={"/github/"+items.login}>

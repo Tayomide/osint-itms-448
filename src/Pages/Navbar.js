@@ -7,16 +7,13 @@ import { NavLink } from 'react-router-dom';
 export const Navbar = () => {
   return (
     <Container>
-      <NavLink to="/"
-        exact="true"
-        end
-      >
+      <a href="/">
         <HomeOutlinedIcon sx={{
           width:"35px",
           height:"35px"
         }}/>
         <p>Home</p>
-      </NavLink>
+      </a>
       <NavLink to="/github/compare"
         className={({ isActive }) => isActive ? "active" : undefined}
         exact="true"
