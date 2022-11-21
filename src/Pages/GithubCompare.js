@@ -242,6 +242,24 @@ const Container = styled.div`
           }
         }
       }
+      @media screen and (max-width: 1000px){
+        width: 100%;
+        margin: 0 1em;
+      }
+    }
+  }
+  @media screen and (max-width: 800px){
+    width: 100vw;
+    .content{
+      flex-direction: column;
+      padding: 0 0.8em;
+      .chart{
+        margin: 0;
+        width: 100%;
+      }
+      .conditions{
+        margin: 1em 0;
+      }
     }
   }
 `
@@ -336,5 +354,8 @@ const InputContainer = styled.div`
       }
       
     }
+  }
+  @media screen and (max-width: 800px){
+    padding: 0.8em;
   }
 `

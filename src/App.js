@@ -9,8 +9,8 @@ import { Navbar } from "./Pages/Navbar";
 const App = () => {
   return (
     <Container>
-      <Navbar />
       <Router>
+        <Navbar />
         <Routes>
           <Route exact path="/" element={ <Home /> } />
           <Route exact path="/github" element={ <Github />} />
@@ -30,4 +30,7 @@ const Container = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   position: relative;
+  @media screen and (max-width: 1000px) {
+    flex-direction: column;
+  }
 `
