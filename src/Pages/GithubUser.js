@@ -35,7 +35,7 @@ export const GithubUser = () => {
     return () => {
       localStorage.removeItem(params.user)
     }
-  }, [GithubApi, params.user])
+  }, [GithubApi, params.user, navigate])
 
   useEffect(() => {
     localStorage[params.user] = JSON.stringify(data)
