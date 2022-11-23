@@ -77,6 +77,9 @@ export const Github = () => {
     <Container onFocus={handleFocusChange} onBlur={handleBlurChange} onClick={() => inputRef.current.focus()} className={!display && "curve"}
     ref={searchRef} onMouseEnter={handleMouseIn} onMouseLeave={handleMouseOut}
     >
+      <div className="title">
+        <h1>OSINT GitHub Search</h1>
+      </div>
       <SearchComponent>
         <SearchIcon />
         <input id="search-username" type="text" onChange={handleInputChange} value={input} ref={inputRef}/>
