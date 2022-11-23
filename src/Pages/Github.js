@@ -81,7 +81,6 @@ export const Github = () => {
         <SearchIcon />
         <input id="search-username" type="text" onChange={handleInputChange} value={input} ref={inputRef}/>
       </SearchComponent>
-      {/* {loading && <ul><li className="no-result">Loading...</li></ul>} */}
       {<ul className={display ? "": "hide"}>
         {
           ((state.searchBar.length === 0 || state.searchBar[0] === "No result") && input && input !== "")?
@@ -89,7 +88,7 @@ export const Github = () => {
             input && input !== "" &&
             state.searchBar.map((items, key) =>
               <li key={key}>
-              <Link to={"/github/"+items.login}>
+              <Link to={items.type === "Organization"? "/github/org/"+items.login:"/github/"+items.login}>
                 <img src={items.avatar_url} alt="profile"></img>
                 <p>{items.login}</p>
               </Link>
@@ -109,8 +108,20 @@ const Container = styled.div`
   flex-direction: column;
   position: absolute;
   left: 30%;
-  top: 10%;
+  top: 15%;
   box-shadow: 1px 3px 6px 2px rgb(220 220 220);
+  >.title{
+    position: fixed;
+    top: 2.8em;
+    height: max-content;
+    width: 100%;
+    left: 0;
+    h1{
+      width: max-content;
+      margin: 0 auto;
+    }
+
+  }
   &.curve{
     border-radius: 1.5em;
   }
