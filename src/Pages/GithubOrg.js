@@ -3,7 +3,10 @@ import { useEffect, useState } from 'react'
 import { useParams } from "react-router-dom"
 import { SmartCarousel } from '../Components/SmartCarousel'
 import { Loading } from "../Components/Loading"
+import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 // import { HeaderLoading } from "../Components/HeaderLoading"
+
+// Give better names for the download buttons.
 
 export const GithubOrg = () => {
   const [repoList, setRepoList] = useState()
@@ -26,6 +29,17 @@ export const GithubOrg = () => {
       tempOrgData["user name"] = response.data.organization.login
       tempOrgData["avatarURL"] = response.data.organization.avatarUrl
       tempOrgData["description"] = response.data.organization.description
+      tempOrgData["createdAt"] = new Date(response.data.organization.createdAt)
+      tempOrgData["email"] = response.data.organization.email
+      tempOrgData["hasSponsorsListing"] = response.data.organization.hasSponsorsListing
+      tempOrgData["id"] = response.data.organization.id
+      tempOrgData["isVerified"] = response.data.organization.isVerified
+      tempOrgData["location"] = response.data.organization.location
+      tempOrgData["organizationBillingEmail"] = response.data.organization.organizationBillingEmail
+      tempOrgData["Number of users"] = response.data.organization.membersWithRoletotalCount
+      tempOrgData["Number of repositories"] = response.data.organization.repositories.totalCount
+      tempOrgData["Total disk usage of repositories"] = response.data.organization.repositories.totalDiskUsage
+
       setOrgData(tempOrgData)
 
       const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
@@ -38,6 +52,7 @@ export const GithubOrg = () => {
         tempList["url"] = repository.url
         tempList["visibility"] = repository.visibility
         tempList["graphUrl"] = repository.openGraphImageUrl
+        tempList["branches"] = repository.refs.totalCount
         tempRepoList.push(tempList)
       }
       setRepoList(tempRepoList)
@@ -57,6 +72,14 @@ export const GithubOrg = () => {
     })
   }, [GithubAPI, params.org])
 
+  const handleClickOne = (queryType) => {
+    var a = document.createElement("a");
+    var file = new Blob([JSON.stringify(orgData, null, 2)], {type: "application/json"});
+    a.href = URL.createObjectURL(file);
+    a.download = orgData[queryType].split(".").join("") + "_OSINT_Org_Data";
+    a.click();
+  }
+
   return (
     <Container>
       {/* <HeaderLoading /> */}
@@ -69,6 +92,7 @@ export const GithubOrg = () => {
           <li>
             <h1 className="org-name">
               <a href={orgData["url"]} target="_blank" rel="noreferrer">{orgData["user name"]}</a>
+              <button onClick={() => handleClickOne("name")}><FileDownloadOutlinedIcon /></button>
             </h1>
             <p>{orgData["name"]}</p>
           </li>
@@ -118,10 +142,17 @@ const Container = styled.div`
         height: 3em;
         border-radius: 50%;
       }
-      h1{
+      .org-name{
+        align-items: flex-end;
         color: #161656;
+        display: inline-flex;
+        flex-direction: row;
         a{
           color: #161656;
+        }
+        button{
+          padding: 0 0 0.17em 0;
+          height: max-content;
         }
       }
       p{
