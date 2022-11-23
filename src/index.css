@@ -39,3 +39,12 @@ input, textarea{
 input[type="radio"], input[type="checkbox"], button{
   cursor: pointer;
 }
+
+@keyframes placeHolderShimmer{
+  0%{
+      background-position: -468px 0
+  }
+  100%{
+      background-position: 468px 0
+  }
+}
