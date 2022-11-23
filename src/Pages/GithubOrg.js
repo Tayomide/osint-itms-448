@@ -1,13 +1,138 @@
-import React from 'react'
 import styled from "styled-components"
+import { useEffect, useState } from 'react'
+import { useParams } from "react-router-dom"
+import { SmartCarousel } from '../Components/SmartCarousel'
+import { Loading } from "../Components/Loading"
+// import { HeaderLoading } from "../Components/HeaderLoading"
 
 export const GithubOrg = () => {
+  const [repoList, setRepoList] = useState()
+  const [userList, setUserList] = useState()
+  const [orgData, setOrgData] = useState()
+
+  const GithubAPI = require("../API/GithubApi")
+
+  const params = useParams()
+  useEffect(() => {
+    GithubAPI.getOrg(params.org)
+    .then(response => response.clone().json())
+    .then(response => {
+      const tempOrgData = {}
+      const tempRepoList = []
+      const tempUserList = []
+      
+      tempOrgData["name"] = response.data.organization.name
+      tempOrgData["url"] = response.data.organization.url
+      tempOrgData["user name"] = response.data.organization.login
+      tempOrgData["avatarURL"] = response.data.organization.avatarUrl
+      tempOrgData["description"] = response.data.organization.description
+      setOrgData(tempOrgData)
+
+      const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+      for(const repository of response.data.organization.repositories.nodes){
+        const tempList = {}
+        tempList["created"] = month[new Date(repository.createdAt).getMonth()] + " " + new Date(repository.createdAt).getFullYear()
+        tempList["data used"] = repository.diskUsage+"kb"
+        tempList["forks"] = repository.forkCount
+        tempList["name"] = repository.name
+        tempList["url"] = repository.url
+        tempList["visibility"] = repository.visibility
+        tempList["graphUrl"] = repository.openGraphImageUrl
+        tempRepoList.push(tempList)
+      }
+      setRepoList(tempRepoList)
+      for(const user of response.data.organization.membersWithRole.nodes){
+        const tempList = {}
+        tempList["user name"] = user.login
+        tempList["followers"] = user.followers.totalCount
+        tempList["following"] = user.following.totalCount
+        tempList["organizations"] = user.organizations.totalCount
+        tempList["repositories"] = user.repositories.totalCount
+        tempList["data used"] = user.repositories.totalDiskUsage+"kb"
+        tempList["avatarUrl"] = user.avatarUrl
+        tempList["url"] = user.url
+        tempUserList.push(tempList)
+      }
+      setUserList(tempUserList)
+    })
+  }, [GithubAPI, params.org])
+
   return (
     <Container>
-      Hey Github Org
+      {/* <HeaderLoading /> */}
+      {orgData &&
+      <>
+        <ul className="header">
+          <li>
+            <img src={orgData["avatarURL"]} alt="Org Avatar" />
+          </li>
+          <li>
+            <h1 className="org-name">
+              <a href={orgData["url"]} target="_blank" rel="noreferrer">{orgData["user name"]}</a>
+            </h1>
+            <p>{orgData["name"]}</p>
+          </li>
+        </ul>
+        {orgData["description"] && <p className="description">{orgData["description"]}</p>}
+      </>}
+      <h2 className="tag">Repositories</h2>
+      { 
+        repoList ?
+        <SmartCarousel list={repoList} type="repo"/> : 
+        <Loading />
+      }
+      <h2 className="tag">Users</h2>
+      { 
+        userList ?
+        <SmartCarousel list={userList} type="user"/> : 
+        <Loading />
+      }
     </Container>
     // Repository names
   )
 }
 
-const Container = styled.div``
+const Container = styled.div`
+  width: -webkit-fill-available;
+  width: -moz-available;
+  overflow-x: hidden;
+  .tag{
+    padding: 1em 2em;
+    height: max-content;
+    color: #707070;
+  }
+  > .header{
+    display: flex;
+    flex-direction: row;
+    height: max-content;
+    padding: 1em 1em;
+    align-items: center;
+    li{
+      width: max-content;
+      height: max-content;
+      padding-left: 1em;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      img{
+        height: 3em;
+        border-radius: 50%;
+      }
+      h1{
+        color: #161656;
+        a{
+          color: #161656;
+        }
+      }
+      p{
+        font-weight: bold;
+        color: #908a8a;
+      }
+    }
+  }
+  >p{
+    height: max-content;
+    padding: 0 0 2em 2em;
+    font-size: 1.1em;
+  }
+`
