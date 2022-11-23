@@ -4,8 +4,10 @@ import { GithubUserHeader } from "../Components/GithubUserHeader"
 import styled from "styled-components"
 import { GithubStat } from "../Components/GithubStat"
 import { GithubChart } from "../Components/GithubChart"
+import { useNavigate } from "react-router-dom"
 
 export const GithubUser = () => {
+  const navigate = useNavigate();
   const GithubApi = require("../API/GithubApi")
   const params = useParams()
   const [data, setData] = useState(null)
@@ -20,7 +22,10 @@ export const GithubUser = () => {
         }else{
           await GithubApi.getUser(params.user)
           .then(response => response.clone().json())
-          .then(response => setData(response))
+          .then(response => {
+            if(response.type === "Organization")navigate(`/github/org/${params.user}`)
+            setData(response)
+          })
           .catch(e => console.error(e))
         }
         setLoading(false)
