@@ -69,10 +69,6 @@ export const Github = () => {
     
   }, [input, state.list])
 
-  useEffect(() => {
-    console.log(state.searchBar)
-  }, [state])
-
   return (
     <Container onFocus={handleFocusChange} onBlur={handleBlurChange} onClick={() => inputRef.current.focus()} className={!display && "curve"}
     ref={searchRef} onMouseEnter={handleMouseIn} onMouseLeave={handleMouseOut}
@@ -168,9 +164,15 @@ const Container = styled.div`
       }
     }
   }
-  @media screen and (max-width: 44em){
-    width: 100%;
-    top: 0;
+  @media screen and (max-width: 1000px) {
+    width: 90%;
+    left: 0;
+    margin: 0 5%; 
+  }
+  @media screen and (max-width: 200px) {
+    .title h1{
+      font-size: 1.1em;
+    }
   }
 `
 
