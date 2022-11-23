@@ -1,7 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import GitHubIcon from '@mui/icons-material/GitHub';
+import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
+// import GitHubIcon from '@mui/icons-material/GitHub';
 import { NavLink } from 'react-router-dom';
 
 export const Navbar = () => {
@@ -18,7 +19,7 @@ export const Navbar = () => {
         className={({ isActive }) => isActive ? "active" : undefined}
         exact="true"
       >
-        <GitHubIcon
+        <CompareArrowsIcon
         sx={{
           width:"50px",
           height:"50px"
