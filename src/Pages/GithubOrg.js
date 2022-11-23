@@ -166,4 +166,14 @@ const Container = styled.div`
     padding: 0 0 2em 2em;
     font-size: 1.1em;
   }
+  @media screen and (max-width: 350px) {
+    > .header{
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 1em 0;
+    }
+    .description{
+      padding: 0 0 2em 1em;
+    }
+  }
 `
