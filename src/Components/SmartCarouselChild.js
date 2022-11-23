@@ -38,6 +38,7 @@ export const SmartCarouselChild = ({obj, type}) => {
         <SmartCarouselP name={"data used"} value={obj["data used"]} />
         <SmartCarouselP name={"forks"} value={obj["forks"]} />
         <SmartCarouselP name={"visibility"} value={obj["visibility"]} />
+        <SmartCarouselP name={"branches"} value={obj["branches"]} />
       </> :
       <p>{JSON.stringify(obj)}</p>
       }
