@@ -5,20 +5,6 @@ const options = {
   }
 }
 
-// const TOKEN = process.env.GITHUB_TOKEN
-
-// export async function retrieveContributionData(userName: string): Promise<Externals.Github.ApiResponse> {
-  
-//   const res = await fetch('https://api.github.com/graphql', {
-//     method: 'POST',
-//     headers: {
-//       Authorization: `Bearer ${TOKEN}`,
-//     },
-//     body: JSON.stringify(body)
-//   })
-//   return res.json()
-// }
-
 export const getCommitGraph = async (user) => {
   const query = `
     query($userName:String!) {
@@ -73,4 +59,71 @@ export const getUser = (user) => fetch(`https://api.github.com/users/${user}`, o
 
 export const getVariables = () => fetch(`/.netlify/functions/github`, options)
 
-// 
+export const getOrg = async (org) => {
+  const query = `
+    query($login: String!, $first: Int, $repositoriesFirst2: Int) {
+      organization(login: $login) {
+        name
+        login
+        avatarUrl
+        url
+        description
+        membersWithRole(first: $first) {
+          nodes {
+            login
+            name
+            following {
+              totalCount
+            }
+            followers {
+              totalCount
+            }
+            organizations {
+              totalCount
+            }
+            repositories {
+              totalCount
+              # Data used
+              totalDiskUsage
+            }
+            avatarUrl
+            url
+          }
+        }
+        repositories(first: $repositoriesFirst2) {
+          nodes {
+            createdAt
+            diskUsage
+            forkCount
+            url
+            visibility
+            name
+            openGraphImageUrl
+          }
+        }
+      }
+    }
+  `
+  const variables = `
+  {
+    "first": 30,
+    "login": "${org}",
+    "repositoriesFirst2": 30
+  }
+  `
+
+  let Authorization;
+
+  await fetch(`/.netlify/functions/github`, options)
+  .then(response => response.json())
+  .then(response => Authorization = `Bearer ${response.GITHUB_TOKEN}`)
+
+  const body = {
+    query,
+    variables
+  }
+  return fetch('https://api.github.com/graphql', {method: "POST", body: JSON.stringify(body), headers: {
+    "Authorization": Authorization
+  }
+  })
+}
