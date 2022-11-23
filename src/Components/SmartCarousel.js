@@ -65,6 +65,9 @@ const Container = styled.ul`
   &.pad{
     padding: 0 2.5em;
   }
+  button{
+    color: inherit
+  }
   .arrow{
     align-items: center;
     background-color: #ffffff;
