@@ -61,14 +61,22 @@ export const getVariables = () => fetch(`/.netlify/functions/github`, options)
 
 export const getOrg = async (org) => {
   const query = `
-    query($login: String!, $first: Int, $repositoriesFirst2: Int) {
+    query($login: String!, $first: Int, $repositoriesFirst2: Int, $refPrefix: String!) {
       organization(login: $login) {
         name
         login
         avatarUrl
         url
         description
+        createdAt
+        email
+        hasSponsorsListing
+        id
+        isVerified
+        location
+        organizationBillingEmail
         membersWithRole(first: $first) {
+          totalCount #total users
           nodes {
             login
             name
@@ -91,6 +99,8 @@ export const getOrg = async (org) => {
           }
         }
         repositories(first: $repositoriesFirst2) {
+          totalCount #total repositories
+          totalDiskUsage #total diskusage
           nodes {
             createdAt
             diskUsage
@@ -99,6 +109,9 @@ export const getOrg = async (org) => {
             visibility
             name
             openGraphImageUrl
+            refs(refPrefix: $refPrefix) {
+              totalCount
+            }
           }
         }
       }
@@ -108,7 +121,8 @@ export const getOrg = async (org) => {
   {
     "first": 30,
     "login": "${org}",
-    "repositoriesFirst2": 30
+    "repositoriesFirst2": 30,
+    "refPrefix": "refs/heads/"
   }
   `
 
