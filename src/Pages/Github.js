@@ -119,7 +119,16 @@ const Container = styled.div`
       width: max-content;
       margin: 0 auto;
     }
-
+    @media screen and (max-width: 1000px) {
+      position: absolute;
+      top: -2.8em;
+    }
+    @media screen and (max-width: 400px) {
+      top: -1.8em;
+      h1{
+        font-size: 1.1em;
+      }
+    }
   }
   &.curve{
     border-radius: 1.5em;
@@ -170,8 +179,12 @@ const Container = styled.div`
     margin: 0 5%; 
   }
   @media screen and (max-width: 200px) {
-    .title h1{
-      font-size: 1.1em;
+    top: 20%;
+    .title{
+      top: -4.2em;
+      h1{
+        width: min-content;
+      }
     }
   }
 `
@@ -194,5 +207,8 @@ const SearchComponent = styled.div`
     height: auto;
     font-size: 1.2em;
     width: inherit;
+  }
+  @media screen and (max-width: 200px) {
+
   }
 `
