@@ -441,6 +441,7 @@ const InputContainer = styled.div`
           svg{
             color: black;
             height: 24px;
+            width: auto;
           }
           p{
             height: max-content;
