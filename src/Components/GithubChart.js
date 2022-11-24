@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import styled from "styled-components"
 
 import {
   Chart as ChartJS,
@@ -30,8 +31,30 @@ export const GithubChart = ({user, type}) => {
   
   
   return (
-    <div className="chart">
-      {data &&<Bar options={CommitGraph.getOptions()} data={data} />}
-    </div>
+    <Container className="chart">
+      {data &&
+      <>
+        <Bar className="desktop" options={{...CommitGraph.getOptions(), maintainAspectRatio : false}} data={data} />
+        <Bar className="mobile" options={{...CommitGraph.getOptions(), indexAxis: 'y', maintainAspectRatio : false}} data={data} />
+      </>
+      }
+    </Container>
     )
 }
+
+const Container = styled.div`
+  .mobile{
+    display: none!important;
+  }
+  .desktop{
+    display: block!important;
+  }
+  @media screen and (max-width: 380px){
+    .mobile{
+      display: block!important;
+    }
+    .desktop{
+      display: none!important;
+    }
+  }
+`
