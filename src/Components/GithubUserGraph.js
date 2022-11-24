@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 export const GithubUserGraph = ({data}) => {
   const graphIntensity = ["intense-0", "intense-1", "intense-2", "intense-3", "intense-4"]
-  const month = ["Jan","Feb","Aug","Sept","Oct","Nov","Dec"]
+  const month = ["Jan","Feb","Mar", "Apr", "May","Jun","Jul","Aug","Sept","Oct","Nov","Dec"]
   const formatContribution = (day) => {
     let date = new Date(day.date)
     return [<p key="12">{day.contributionCount} contributions on {date.getDate()} {month[date.getMonth()]}, {date.getFullYear()}</p>]
@@ -13,7 +13,7 @@ export const GithubUserGraph = ({data}) => {
       <p>User Commit Activity</p>
       <ul className='graph'>
         {data.map((weekCommit, idx) => weekCommit.contributionDays.map((dayCommit, id) => 
-          <li key={`${idx}${id}`} className={graphIntensity[Math.ceil(dayCommit.contributionCount/10)]}>
+          <li key={`${idx}${id}`} className={graphIntensity[Math.ceil(dayCommit.contributionCount/10)] || "intense-4"}>
             {formatContribution(dayCommit)}
           </li>
         ))}
