@@ -169,7 +169,8 @@ export const GithubCompare = () => {
           <p>User List</p>
           <button></button>
           <ul>
-            {updateUser && userList.map((userName, idx) => 
+          {/* updateUser */}
+            {true && userList.map((userName, idx) => 
             <li key={idx}>
               <Link to={"../github/" + userName.toLowerCase()}>
                 <GitHubIcon sx={{
@@ -440,8 +441,10 @@ const InputContainer = styled.div`
           flex-direction: row;
           svg{
             color: black;
+            height: 24px;
           }
           p{
+            height: max-content;
             color: black;
             padding: 0 0 0 0.2em;
             overflow: hidden;
