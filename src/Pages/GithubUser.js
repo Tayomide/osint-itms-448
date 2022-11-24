@@ -205,6 +205,9 @@ const Container = styled.div`
   width: -webkit-fill-available;
   width: -moz-available;
   overflow-x: hidden;
+  button{
+    color: inherit
+  }
   .tag{
     padding: 1em 2em;
     height: max-content;

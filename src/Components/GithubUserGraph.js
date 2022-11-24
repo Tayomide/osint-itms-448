@@ -29,9 +29,6 @@ const Container = styled.li`
   padding: 1em;
   font-size: 1.05em;
   grid-column: -1 / -3;
-  button{
-    color: inherit
-  }
   > p{
     padding: 0 0 0.6em 0;
     font-size: 1.1em;
