@@ -438,7 +438,11 @@ const InputContainer = styled.div`
           display: flex;
           align-items: center;
           flex-direction: row;
+          svg{
+            color: black;
+          }
           p{
+            color: black;
             padding: 0 0 0 0.2em;
             overflow: hidden;
             text-overflow: ellipsis;
