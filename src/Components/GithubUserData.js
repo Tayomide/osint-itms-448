@@ -48,8 +48,12 @@ const Container = styled.li`
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-      svg{
-        height: auto;
+      button{
+        height: min-content;
+        svg{
+          height: auto;
+          height: min-content;
+        }
       }
     }
     @media screen and (max-width: 400px){
