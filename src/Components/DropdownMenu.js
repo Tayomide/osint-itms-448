@@ -64,6 +64,7 @@ const Container = styled.div`
   button {
     width: 0.8em;
     height: 0.5em!important;
+    padding: 0;
     background-color: black;
     clip-path: polygon(100% 0%, 0 0%, 50% 100%);
   }

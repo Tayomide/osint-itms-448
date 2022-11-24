@@ -49,7 +49,7 @@ const Container = styled.div`
   .desktop{
     display: block!important;
   }
-  @media screen and (max-width: 380px){
+  @media screen and (max-width: 500px){
     .mobile{
       display: block!important;
     }

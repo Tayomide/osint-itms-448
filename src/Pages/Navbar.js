@@ -25,7 +25,7 @@ export const Navbar = () => {
           height:"50px"
         }}
         className='github'/>
-        <p>Github</p>
+        <p>Compare</p>
       </NavLink>
     </Container>
   )

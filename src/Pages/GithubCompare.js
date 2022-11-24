@@ -219,6 +219,9 @@ const Container = styled.div`
   width: -webkit-fill-available;
   width: -moz-available;
   height: max-content;
+  button{
+    color: inherit;
+  }
   .chart{
     border: 1px solid #e7e7e7;
     border-radius: 0.3em;
@@ -235,7 +238,7 @@ const Container = styled.div`
         height: inherit!important;
         width: inherit
       }
-      @media screen and (max-width: 380px){
+      @media screen and (max-width: 500px){
         height: 100vh;
       }
     }
@@ -454,10 +457,11 @@ const InputContainer = styled.div`
       font-weight: bold;
     }
     button {
-      width: 0.8em;
-      height: 0.5em!important;
       background-color: black;
       clip-path: polygon(100% 0%, 0 0%, 50% 100%);
+      height: 0.5em!important;
+      padding: 0;
+      width: 0.8em;
     }
   }
   @media screen and (max-width: 800px){
