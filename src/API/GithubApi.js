@@ -141,3 +141,137 @@ export const getOrg = async (org) => {
   }
   })
 }
+
+export const getUserData = async (user) => {
+  const query = `
+    query($login: String!, $first: Int, $repositoriesFirst2: Int, $refPrefix: String!, $organizationsFirst2: Int, $followingFirst2: Int) {
+      user(login: $login) {
+        login
+        name
+        avatarUrl
+        bio
+        followers(first: $first) {
+          totalCount
+          nodes {
+            avatarUrl
+            bio
+            createdAt
+            company
+            login
+            name
+            following {
+              totalCount
+            }
+            followers {
+              totalCount
+            }
+            organizations {
+              totalCount
+            }
+            repositories {
+              totalCount
+              # Data used
+              totalDiskUsage
+            }
+            avatarUrl
+            url
+            id
+          }
+        }
+        following(first: $followingFirst2) {
+          totalCount
+          nodes {
+            avatarUrl
+            bio
+            createdAt
+            company
+            login
+            name
+            following {
+              totalCount
+            }
+            followers {
+              totalCount
+            }
+            organizations {
+              totalCount
+            }
+            repositories {
+              totalCount
+              # Data used
+              totalDiskUsage
+            }
+            avatarUrl
+            url
+            id
+          }
+        }
+        repositories(first: $repositoriesFirst2) {
+          totalCount
+          totalDiskUsage
+          nodes {
+            createdAt
+            diskUsage
+            forkCount
+            url
+            visibility
+            name
+            openGraphImageUrl
+            refs(refPrefix: $refPrefix) {
+              totalCount
+            }
+          }
+        }
+        organizations(first: $organizationsFirst2) {
+          totalCount
+          nodes {
+            name
+            login
+            avatarUrl
+            url
+            description
+            createdAt
+            email
+            hasSponsorsListing
+            id
+            isVerified
+            location
+            organizationBillingEmail
+            membersWithRole {
+              totalCount
+            }
+            repositories {
+              totalCount
+              totalDiskUsage
+            }
+          }
+        }
+      }
+    }
+  `
+  const variables = `
+  {
+    "login": "${user}",
+    "first": 50,
+    "repositoriesFirst2": 100,
+    "refPrefix": "refs/heads/",
+    "organizationsFirst2": 50,
+    "followingFirst2": 50
+  }
+  `
+
+  let Authorization;
+
+  await fetch(`/.netlify/functions/github`, options)
+  .then(response => response.json())
+  .then(response => Authorization = `Bearer ${response.GITHUB_TOKEN}`)
+
+  const body = {
+    query,
+    variables
+  }
+  return fetch('https://api.github.com/graphql', {method: "POST", body: JSON.stringify(body), headers: {
+    "Authorization": Authorization
+  }
+  })
+}
