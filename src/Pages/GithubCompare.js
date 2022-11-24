@@ -169,8 +169,7 @@ export const GithubCompare = () => {
           <p>User List</p>
           <button></button>
           <ul>
-          {/* updateUser */}
-            {true && userList.map((userName, idx) => 
+            {updateUser && userList.map((userName, idx) => 
             <li key={idx}>
               <Link to={"../github/" + userName.toLowerCase()}>
                 <GitHubIcon sx={{
