@@ -92,24 +92,34 @@ export const GithubOrg = () => {
           <li>
             <h1 className="org-name">
               <a href={orgData["url"]} target="_blank" rel="noreferrer">{orgData["user name"]}</a>
-              <button onClick={() => handleClickOne("name")}><FileDownloadOutlinedIcon /></button>
+              <button onClick={() => handleClickOne("login")}><FileDownloadOutlinedIcon /></button>
             </h1>
             <p>{orgData["name"]}</p>
           </li>
         </ul>
         {orgData["description"] && <p className="description">{orgData["description"]}</p>}
       </>}
-      <h2 className="tag">Repositories</h2>
       { 
         repoList ?
-        <SmartCarousel list={repoList} type="repo"/> : 
-        <Loading />
+        <>
+          { Object.keys(repoList).length !== 0 && <h2 className="tag">Repositories</h2> }
+          <SmartCarousel list={repoList} type="repo"/> 
+        </>: 
+        <>
+          <h2 className="tag">Repositories</h2>
+          <Loading />
+        </>
       }
-      <h2 className="tag">Users</h2>
       { 
         userList ?
-        <SmartCarousel list={userList} type="user"/> : 
-        <Loading />
+          <>
+            { Object.keys(userList).length !== 0 && <h2 className="tag">Users</h2> }
+            <SmartCarousel list={userList} type="user"/> 
+          </> :
+          <>
+            <h2 className="tag">Users</h2>
+            <Loading />
+          </>
       }
     </Container>
     // Repository names
