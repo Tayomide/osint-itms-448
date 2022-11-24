@@ -82,4 +82,11 @@ const Container = styled.nav`
       background-color: rgb(231 231 231);
     }
   }
+  @media screen and (max-width: 220px) {
+    a{
+      padding: 0;
+      width: inherit;
+      justify-content: center;
+    }
+  }
 `
