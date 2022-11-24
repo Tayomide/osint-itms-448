@@ -430,7 +430,7 @@ const InputContainer = styled.div`
         align-items: center;
         height: 2.3em!important;
         a{
-          color: inherit;
+          color: black;
           padding: 0 0 0 0.2em;
           overflow: hidden;
           text-overflow: ellipsis;
