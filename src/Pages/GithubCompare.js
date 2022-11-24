@@ -18,6 +18,7 @@ export const GithubCompare = () => {
   const [chartType, setChartType] = useState("commits")
   const [queryType, setQueryType] = useState("")
   const chartList = ["commits", "followers", "following", "repositories"]
+  const [updateUser, setUpdateUser] = useState(false)
   const inputRef = useRef()
   const addUser = () => {
     setNewUser(false)
@@ -48,6 +49,7 @@ export const GithubCompare = () => {
   useEffect(() => {
     if(userList.length >= 1)setQueryType(userList[0])
     if(userList.length >= 5)setUserAdd(false)
+    else setUserAdd(true)
     localStorage["userList"] = JSON.stringify(userList)
   }, [userList])
 
@@ -119,11 +121,11 @@ export const GithubCompare = () => {
   return (
     <Container>
       <InputContainer>
-      <DropdownMenu 
-        type={chartType}
-        setType={setChartType}
-        list={chartList}
-      />
+        <DropdownMenu 
+          type={chartType}
+          setType={setChartType}
+          list={chartList}
+        />
         {userAdd &&
         <>
         {newUser ?
@@ -163,6 +165,32 @@ export const GithubCompare = () => {
             />
           </div>
         )}
+        <ul className="dropdown-user" onClick={() => setUpdateUser(!updateUser)} tabIndex="1" onBlur={(e) => {if(!e.currentTarget.contains(e.relatedTarget))setUpdateUser(false)}}>
+          <p>User List</p>
+          <button></button>
+          <ul>
+            {updateUser && userList.map((userName, idx) => 
+            <li key={idx}>
+              <Link to={"../github/" + userName.toLowerCase()}>
+                <GitHubIcon sx={{
+                  aspectRatio: "1 / 1",
+                  width: "max-content",
+                  fontWeight: 'bold'
+                }}/>
+                <p>{userName}</p>
+              </Link>
+              <ClearIcon className="delete-user" sx={{
+                aspectRatio: "1 / 1",
+                height: "inherit",
+                fontWeight: 'bold'
+              }}
+              onClick={() => deleteUser(userName)}
+              />
+            </li>
+          )}
+
+          </ul>
+        </ul>        
         
       </InputContainer>
       { userList.length > 0 && <div className="content">
@@ -207,6 +235,9 @@ const Container = styled.div`
         height: inherit!important;
         width: inherit
       }
+      @media screen and (max-width: 380px){
+        height: 100vh;
+      }
     }
     .conditions{
       width: 25vw;
@@ -247,6 +278,18 @@ const Container = styled.div`
         margin: 0 1em;
       }
     }
+    @media screen and (max-width: 350px){
+      .conditions > ul > li{
+        flex-direction: column-reverse;
+        .dropdown{
+          max-width: 100%;
+          width: 100%;
+          min-height: 2.3em;
+          height: 2.3em;
+        }
+      }
+    }
+
   }
   @media screen and (max-width: 800px){
     width: 100vw;
@@ -270,6 +313,9 @@ const InputContainer = styled.div`
   height: 4.3em;
   padding: 1em;
   gap: 1.25em; //Remove this eventually
+  .dropdown >p{
+    font-weight: bold;
+  }
   .add-user-input{
     align-items: center;
     background-color: #efefef;
@@ -355,7 +401,104 @@ const InputContainer = styled.div`
       
     }
   }
+  .dropdown-user{
+    align-items: center;
+    background-color: #efefef;
+    border-radius: 0.2em 0.2em 0.2em 0.2em;
+    cursor: pointer;
+    display: none;
+    flex-direction: row;
+    height: 2.3em;
+    justify-content: space-between;
+    padding: 0 1em;
+    position: relative;
+    width: 8em;
+    ul{
+      background-color: inherit;
+      border-radius: 0.2em 0.2em 0.2em 0.2em;
+      height: max-content;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 3em;
+      li{
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        height: 2.3em!important;
+        a{
+          color: inherit;
+          padding: 0 0 0 0.2em;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          flex: 1;
+          display: flex;
+          align-items: center;
+          flex-direction: row;
+          p{
+            padding: 0 0 0 0.2em;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+        :hover{
+          background-color: #d4d3d3;
+        }
+      }
+    }
+    p{
+      height: max-content;
+      text-transform: capitalize;
+    }
+    >p{
+      font-weight: bold;
+    }
+    button {
+      width: 0.8em;
+      height: 0.5em!important;
+      background-color: black;
+      clip-path: polygon(100% 0%, 0 0%, 50% 100%);
+    }
+  }
   @media screen and (max-width: 800px){
     padding: 0.8em;
+    .dropdown-user{
+      display: flex;
+    }
+    .user{
+      display: none;
+    }
+  }
+  @media screen and (max-width: 500px){
+    gap: 0.5em;
+    .add-user-button button{
+      width: max-content;
+      padding: 0 0.5em;
+    }
+    .dropdown{
+      width: 7em;
+    }
+    .dropdown, .dropdown-user{
+      padding: 0 0.5em;
+    }
+  }
+  @media screen and (max-width: 380px){
+    flex-direction: column;
+    height: max-content;
+    .dropdown, .dropdown-user{
+      width: 100%;
+      >p{
+        z-index: 1;
+      }
+      >ul{
+        z-index: 3;
+      }
+    }
+    .add-user-button button{
+      width: 100%
+    }
+    .add-user-input input{
+      flex: 1;
+    }
   }
 `
