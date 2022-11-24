@@ -18,10 +18,10 @@ ul, ol{
 a{
   text-decoration: none;
 }
-a:visited{
+/* a:visited{
   color: inherit;
   text-decoration: none;
-}
+} */
 
 button{
   border-width: 0;
