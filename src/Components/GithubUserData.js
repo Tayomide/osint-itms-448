@@ -48,6 +48,9 @@ const Container = styled.li`
       display: flex;
       flex-direction: row;
       justify-content: space-between;
+      svg{
+        height: auto;
+      }
     }
     @media screen and (max-width: 400px){
       display: flex;
