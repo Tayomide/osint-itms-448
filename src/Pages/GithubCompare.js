@@ -19,12 +19,16 @@ export const GithubCompare = () => {
   const [queryType, setQueryType] = useState("")
   const chartList = ["commits", "followers", "following", "repositories"]
   const [updateUser, setUpdateUser] = useState(false)
+  const [userQueryList, setUserQueryList] = useState()
+  const [userNodeList, setUserNodeList] = useState(localStorage["GithubUser"] ? JSON.parse(localStorage["GithubUser"]) : [])
+  const [downloadStats, setDownloadStats] = useState()
+
   const inputRef = useRef()
-  const addUser = () => {
+  const addUser = (tempUserParam) => {
     setNewUser(false)
-    const tempUser = user
+    const tempUser = tempUserParam || user
     setUser("")
-    GithubApi.getUser(user)
+    GithubApi.getUser(tempUser)
     .then(response => response.clone().json())
     .then(response => {
       if((!response["message"] || response["message"] !== "Not Found") &&
@@ -96,26 +100,76 @@ export const GithubCompare = () => {
     }
   }, [queryType, GithubApi])
 
-  const handleClickOne = (e) => {
-    var a = document.createElement("a");
-    let data2 = Object.values(data).map(name => JSON.stringify(name, null, 2))
-    let content = "{\n" + data2.join(",\n") + "\n}"
-    var file = new Blob([content], {type: "text/plain"});
-    a.href = URL.createObjectURL(file);
-    a.download = queryType + "_OSINT_Data";
-    a.click();
-  }
-
-  const handleClickMultiple = (e) => {
-    var a = document.createElement("a");
-    let content = ""
-    for(let name in data){
-      content = JSON.stringify(data[name], null, 2)
-      var file = new Blob([content], {type: "application/json"});
-      a.href = URL.createObjectURL(file);
-      a.download = queryType + "_" + name;
-      a.click();
+  useEffect(() => {
+    let queryList = []
+    if(user && user !== ""){
+      let list = localStorage["GithubUser"] ? JSON.parse(localStorage["GithubUser"]) : []
+      queryList = list.filter(i => i.login && i.login.toLowerCase().includes(user.toLowerCase()))
+      if(user && queryList.length === 0)GithubApi.findUserNodes(user)
+      .then(response => response.json())
+      .then(response => {
+        queryList = response.data.search.nodes.filter(i => i.login && i.login.toLowerCase().includes(user.toLowerCase()))
+        setUserNodeList((prevState) => [...prevState, ...response.data.search.nodes])
+      })
     }
+    setUserQueryList(queryList.slice(0,6))
+  }, [user, GithubApi])
+
+  useEffect(() => {
+    localStorage["GithubUser"] = JSON.stringify(userNodeList)
+    if(user && user !== "")setUserQueryList(userNodeList.filter(i => i.login && i.login.toLowerCase().includes(user.toLowerCase())).slice(0,6))
+  }, [userNodeList, user])
+
+  useEffect(() => {
+    if(queryType && queryType !== "")(async () => {
+      // const user = queryType
+      let tempUserData = {}
+      const tempUserStats = {}
+      const tempDownloadStats = {}
+      GithubApi.getUser(queryType)
+      .then(response => response.json())
+      .then(response => {
+        setDownloadStats()
+        tempUserData = response
+        tempUserStats["Following"] = response.following
+        tempUserStats["Followers"] = response.followers
+        tempUserStats["Public Repositories"] = response.public_repos
+      })
+
+      await GithubApi.getUserData(queryType)
+      .then(response => response.json())
+      .then(response => {
+        response = response.data.user
+
+        tempUserStats["Organzations"] = response.organizations.totalCount
+        tempUserStats["Repositories"] = response.repositories.totalCount
+        tempUserStats["Data Used"] = response.repositories.totalDiskUsage+"kb"
+
+        tempDownloadStats["All"] = {...tempUserData, ...response}
+        tempDownloadStats["User's Followers"] = response.followers
+        tempDownloadStats["User's Organizations"] = response.organizations
+        tempDownloadStats["User's Repositories"] = response.repositories
+        tempDownloadStats["User's Profile"] = tempUserStats
+      })
+
+      await GithubApi.getCommitGraph(queryType)
+      .then(response => response.json())
+      .then(response => {
+        tempDownloadStats["User's Profile"] = {...tempDownloadStats["User's Profile"], "Commits": response.data.user.contributionsCollection.contributionCalendar.totalContributions}
+        tempDownloadStats["User's Commits"] = response.data.user.contributionsCollection
+        tempDownloadStats["All"] = {...tempDownloadStats["All"], "commits": response.data.user.contributionsCollection}
+      })
+      
+      setDownloadStats(tempDownloadStats)
+    })()
+  }, [GithubApi, queryType])
+
+  const handleClickOne = (queryType1) => {
+    var a = document.createElement("a");
+    var file = new Blob([JSON.stringify(downloadStats[queryType1], null, 2)], {type: "application/json"});
+    a.href = URL.createObjectURL(file);
+    a.download = queryType + "'s " + queryType1.split("User's ").join("") + "_Data";
+    a.click();
   }
 
   return (
@@ -129,7 +183,8 @@ export const GithubCompare = () => {
         {userAdd &&
         <>
         {newUser ?
-          <div className="add-user-input" tabIndex="2" onBlur={(e) => {if(!e.currentTarget.contains(e.relatedTarget))setNewUser(false)}}>
+          <ul className="dropdown-user-search" onClick={() => setNewUser(true)} tabIndex="2" onBlur={(e) => {if(!e.currentTarget.contains(e.relatedTarget))setNewUser(false)}}>
+          <div className="add-user-input">
             <input type="text" value={user}
             onChange={(e) => setUser(e.target.value)}
             onKeyDown={(e) => {if(e.code === "Enter")addUser()}}
@@ -140,7 +195,21 @@ export const GithubCompare = () => {
             fontWeight: 'bold'
           }}
           /></button>
-          </div> :
+          </div>
+          <ul>
+            {userQueryList?.map((userName, idx) => 
+            <li key={idx}>
+              <button onClick={(e) => {e.stopPropagation();addUser(userName.login);setNewUser(false)}}>
+                <img src={userName.avatarUrl} alt="Icon" />
+                <p>{userName.login}</p>
+              </button>
+            </li>
+          )}
+
+          </ul>
+        </ul>
+          
+          :
           <div className="add-user-button">
             <button onClick={() => setNewUser(true)}>Add User</button>
           </div>
@@ -196,18 +265,22 @@ export const GithubCompare = () => {
       { userList.length > 0 && <div className="content">
         < GithubChart user={userList} type={chartType}/>
         <div className="conditions">
-          <p>Github User Stat</p>
+          <div>
+            <p>Export User Data</p>
+            <DropdownMenu
+              type={queryType}
+              setType={setQueryType}
+              list={userList}
+            />
+          </div>
           <ul>
-            <li>
-              <button onClick={handleClickOne}>All <FileDownloadOutlinedIcon /></button>
-              <button onClick={handleClickMultiple}><FileDownloadOutlinedIcon /></button>
-              <DropdownMenu
-                type={queryType}
-                setType={setQueryType}
-                list={userList}
-              />
-            </li>
-          </ul>
+            {downloadStats &&
+              Object.keys(downloadStats).map((key, idx) => <li key={idx}>
+                <p>{key}</p>
+                <button onClick={() => handleClickOne(key)}><FileDownloadOutlinedIcon /></button>
+              </li>)
+            }
+          </ul> 
         </div>
       </div>}
       
@@ -226,11 +299,12 @@ const Container = styled.div`
     border: 1px solid #e7e7e7;
     border-radius: 0.3em;
     padding: 0.3em 0.4em;
-    margin: 0 0 0 1em;
   }
   .content{
     display: flex;
     flex-direction: row;
+    gap: 1em;
+    padding: 0 1em;
     .chart{
       height: 70vh;
       width: calc(70vw - 5em);
@@ -243,45 +317,51 @@ const Container = styled.div`
       }
     }
     .conditions{
-      width: 25vw;
-      height: max-content;
-      margin: 0 auto;
-      padding: 1em 1em;
-      border: 1px solid #e7e7e7;
-      border-radius: 0.3em;
-      *{
-        height: max-content;
-      }
-      > ul{
-        padding-top: 1em;
-        li{
-          display: flex;
-          flex-direction: row;
-          gap: 0.3em;
-          > button{
-            align-items: center;
-            border: 1px solid #e7e7e7;
-            border-radius: 0.3em;
-            display: inline-flex;
-            font-size: 1em;
-            font-weight: bold;
-            height: 2.3em;
-            justify-content: center;
-            padding: 0 0.4em 0 0.4em;
-          }
-          .dropdown{
-            height: auto;
-            max-width: 12em;
-            flex: 1;
-          }
+      border: 1px solid #efefef;
+      border-radius: 0.4em;
+      width: -webkit-fill-available;
+      width: -moz-available;
+      padding: 1em;
+      >div{
+        > p{
+          padding: 0 0 0.6em 0;
+          font-size: 1.1em;
+          font-weight: bold;
+        }
+        .dropdown{
+          width: 100%;
+          max-width: 10em;
         }
       }
-      @media screen and (max-width: 1000px){
-        width: 100%;
-        margin: 0 1em;
+      > ul{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 1em;
+        padding-top: 1em;
+        li{
+          align-items: center;
+          border: 1px solid #efefef;
+          border-radius: 0.4em;
+          padding: 0.4em;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          button{
+            height: min-content;
+            svg{
+              height: auto;
+              height: min-content;
+            }
+          }
+        }
+        @media screen and (max-width: 400px){
+          display: flex;
+          flex-direction: column;
+          gap: 1em;
+        }
       }
     }
-    @media screen and (max-width: 350px){
+    /* @media screen and (max-width: 350px){
       .conditions > ul > li{
         flex-direction: column-reverse;
         .dropdown{
@@ -291,7 +371,7 @@ const Container = styled.div`
           height: 2.3em;
         }
       }
-    }
+    } */
 
   }
   @media screen and (max-width: 800px){
@@ -303,9 +383,14 @@ const Container = styled.div`
         margin: 0;
         width: 100%;
       }
-      .conditions{
+      /* .conditions{
         margin: 1em 0;
-      }
+      } */
+    }
+  }
+  @media screen and (max-width: 200px){
+    .content{
+      padding: 0;
     }
   }
 `
@@ -332,6 +417,7 @@ const InputContainer = styled.div`
       height: 2.3em;
       padding: 0 0.3em;
       width: 6em;
+      text-transform: capitalize;
     }
     button{
       font-size: 1em;
@@ -404,7 +490,7 @@ const InputContainer = styled.div`
       
     }
   }
-  .dropdown-user{
+  .dropdown-user, .dropdown-user-search{
     align-items: center;
     background-color: #efefef;
     border-radius: 0.2em 0.2em 0.2em 0.2em;
@@ -463,12 +549,43 @@ const InputContainer = styled.div`
     >p{
       font-weight: bold;
     }
-    button {
+    &.dropdown-user button {
       background-color: black;
       clip-path: polygon(100% 0%, 0 0%, 50% 100%);
       height: 0.5em!important;
       padding: 0;
       width: 0.8em;
+    }
+  }
+  .dropdown-user-search{
+    display: flex;
+    padding: 0;
+    button{
+      color: black;
+      padding: 0 0 0 0.2em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      img{
+        border-radius: 50%;
+        height: 2.2em;
+        width: auto;
+      }
+      p{
+        height: max-content;
+        color: black;
+        padding: 0 0 0 0.2em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 1em;
+        font-weight: bold;
+      }
+      :hover{
+        background-color: #d4d3d3;
+      }
     }
   }
   @media screen and (max-width: 800px){
@@ -496,7 +613,7 @@ const InputContainer = styled.div`
   @media screen and (max-width: 380px){
     flex-direction: column;
     height: max-content;
-    .dropdown, .dropdown-user{
+    .dropdown, .dropdown-user, .dropdown-user-search{
       width: 100%;
       >p{
         z-index: 1;
@@ -504,7 +621,17 @@ const InputContainer = styled.div`
       >ul{
         z-index: 3;
       }
+      input{
+        flex: 1
+      }
     }
+    .dropdown-user-search {
+      >div {
+        flex: 1;
+        button{
+          max-width: max-content;
+        }
+    }}
     .add-user-button button{
       width: 100%
     }
