@@ -55,18 +55,6 @@ const Container = styled.li`
         background-color: #e0e0e0;
         border-radius: 0.3em;
         z-index: 20;
-        /* ::after{
-          content: "";
-          display: block;
-          width: 0; 
-          height: 0; 
-          border-right: 0.5em solid transparent; 
-          border-left: 0.5em solid transparent;
-          border-top: 0.5em solid #e0e0e0;
-          position:absolute;
-          left:45%;
-          bottom: -0.5em;
-        } */
       }
       :hover p{
         top: -3em;

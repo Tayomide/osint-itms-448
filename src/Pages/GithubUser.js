@@ -195,7 +195,6 @@ export const GithubUser = () => {
           <Loading />
         </>
       }
-      {/* Add Followers and Following */}
     </Container>
   )
 }

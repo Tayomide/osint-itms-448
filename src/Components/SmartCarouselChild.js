@@ -22,7 +22,6 @@ export const SmartCarouselChild = ({obj, type}) => {
           </p>
           <button onClick={() => handleClickOne("user name")}><FileDownloadOutlinedIcon /></button>
         </div>
-        {/* Make the generic p tags into a component */}
         <SmartCarouselP name={"followers"} value={obj["followers"]} />
         <SmartCarouselP name={"following"} value={obj["following"]} />
         <SmartCarouselP name={"organizations"} value={obj["organizations"]} />
