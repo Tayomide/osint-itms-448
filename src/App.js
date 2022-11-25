@@ -10,7 +10,7 @@ import { useEffect } from "react";
 
 const App = () => {
   useEffect(() => {
-    if(localStorage["GithubUser"] && JSON.parse(localStorage["GithubUser"]).length > 0 && !JSON.parse(localStorage["GithubUser"])[0]["__typename"])localStorage["GithubUser"] = JSON.stringify([])
+    if(localStorage["GithubUser"] && JSON.parse(localStorage["GithubUser"]).length > 0 && !JSON.parse(localStorage["GithubUser"])[0]["__typename"])localStorage.removeItem("GithubUser")
   }, [])
   return (
     <Container>
