@@ -97,7 +97,6 @@ export const GithubUser = () => {
         }
         setFollowingList(tempFollowingList)
 
-
         tempUserStats["Organzations"] = response.organizations.totalCount
         tempUserStats["Repositories"] = response.repositories.totalCount
         tempUserStats["Data Used"] = response.repositories.totalDiskUsage+"kb"
