@@ -6,8 +6,12 @@ import { GithubUser } from "./Pages/GithubUser";
 import { Github } from "./Pages/Github";
 import { GithubCompare } from "./Pages/GithubCompare";
 import { Navbar } from "./Pages/Navbar";
+import { useEffect } from "react";
 
 const App = () => {
+  useEffect(() => {
+    if(localStorage["GithubUser"] && JSON.parse(localStorage["GithubUser"]).length > 0 && !JSON.parse(localStorage["GithubUser"])[0]["__typename"])localStorage["GithubUser"] = JSON.stringify([])
+  }, [])
   return (
     <Container>
       <Router>
