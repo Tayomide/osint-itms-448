@@ -275,3 +275,86 @@ export const getUserData = async (user) => {
   }
   })
 }
+
+export const findUserNodes = async (user) => {
+  const query = `
+    query($query: String!, $type: SearchType!, $first: Int) {
+      search(query: $query, type: $type, first: $first) {
+        nodes {
+          ... on User {
+            login
+            avatarUrl
+            __typename
+            url
+          }
+        }
+      }
+    }
+  `
+  const variables = `
+    {  
+      "query": "${user}",
+      "type": "USER",
+      "first": 30
+    }
+  `
+
+  let Authorization;
+
+  await fetch(`/.netlify/functions/github`, options)
+  .then(response => response.json())
+  .then(response => Authorization = `Bearer ${response.GITHUB_TOKEN}`)
+
+  const body = {
+    query,
+    variables
+  }
+  return fetch('https://api.github.com/graphql', {method: "POST", body: JSON.stringify(body), headers: {
+    "Authorization": Authorization
+  }
+  })
+}
+export const findAccountNodes = async (user) => {
+  const query = `
+    query($query: String!, $type: SearchType!, $first: Int) {
+      search(query: $query, type: $type, first: $first) {
+        nodes {
+          ... on Organization {
+            login
+            avatarUrl
+            __typename
+            url
+          }
+          ... on User {
+            login
+            avatarUrl
+            __typename
+            url
+          }
+        }
+      }
+    }
+  `
+  const variables = `
+  {  
+    "query": "${user}",
+    "type": "USER",
+    "first": 30
+  }
+  `
+
+  let Authorization;
+
+  await fetch(`/.netlify/functions/github`, options)
+  .then(response => response.json())
+  .then(response => Authorization = `Bearer ${response.GITHUB_TOKEN}`)
+
+  const body = {
+    query,
+    variables
+  }
+  return fetch('https://api.github.com/graphql', {method: "POST", body: JSON.stringify(body), headers: {
+    "Authorization": Authorization
+  }
+  })
+}
