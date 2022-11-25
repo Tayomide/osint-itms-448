@@ -1,35 +1,38 @@
 import styled from "styled-components"
-import { useEffect, useRef, useReducer, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import SearchIcon from '@mui/icons-material/Search';
 import { Link } from "react-router-dom"
 
 const GithubApi = require("../API/GithubApi")
 
-const initalState = {
-  list : localStorage["GithubUser"]? JSON.parse(localStorage["GithubUser"]) : [],
-  searchBar : localStorage["GithubUser"]? JSON.parse(localStorage["GithubUser"]) : ["Type a Username"]
-}
-
-const reducer = (state, action) => {
-  switch(action.type){
-    case "input":
-      if(!action.value || action.value === "")return{...state, searchBar:["No result"]}
-      return {...state, searchBar: state.list.filter(i => i.login.toLowerCase().includes(action.value.toLowerCase()))}
-    case "update":
-      if(!action.value || action.value === "" || !action.list || action.list.length === 0)return {...state, searchBar:["No result"]}
-      return {list:[...state.list, ...action.list], searchBar:[...action.list]}
-    default:
-      throw new Error()
-  }
-}
-
 export const Github = () => {
   const [input, setInput] = useState("")
-  const [state, dispatch] = useReducer(reducer, initalState)
   const [display, setDisplay] = useState(false)
   const [mouse, setMouse] = useState(false)
+  const [userQueryList, setUserQueryList] = useState()
+  const [userNodeList, setUserNodeList] = useState(localStorage["GithubUser"] ? JSON.parse(localStorage["GithubUser"]) : [])
   const inputRef = useRef()
   const searchRef = useRef()
+
+  useEffect(() => {
+    let queryList = []
+    if(input && input !== ""){
+      let list = localStorage["GithubUser"] ? JSON.parse(localStorage["GithubUser"]) : []
+      queryList = list.filter(i => i.login && i.login.toLowerCase().includes(input.toLowerCase()))
+      if(input && queryList.length === 0)GithubApi.findAccountNodes(input)
+      .then(response => response.json())
+      .then(response => {
+        queryList = response.data.search.nodes.filter(i => i.login && i.login.toLowerCase().includes(input.toLowerCase()))
+        setUserNodeList((prevState) => [...prevState, ...response.data.search.nodes])
+      })
+    }
+    setUserQueryList(queryList)
+  }, [input])
+
+  useEffect(() => {
+    localStorage["GithubUser"] = JSON.stringify(userNodeList)
+    if(input && input !== "")setUserQueryList(userNodeList.filter(i => i.login && i.login.toLowerCase().includes(input.toLowerCase())))
+  }, [userNodeList, input])
 
   const handleInputChange = (e) => {
     if(e.target.value[e.target.value.length-1] !== " ")setInput(e.target.value)
@@ -51,24 +54,6 @@ export const Github = () => {
     setMouse(true)
   }
 
-  useEffect(() => {
-    if(input !== ""){
-      dispatch({type: "input",value: input})
-      if(!state.list.find(elem => elem.login.toLowerCase().includes(input.toLowerCase()))){
-        GithubApi.findUser(input)
-        .then(response => response.json())
-        .then(response => {
-          if(typeof(response.items) === "object"){
-            localStorage["GithubUser"] = JSON.stringify([...state.list, ...response.items])
-            dispatch({type:"update",value:input, list:response.items})
-          }
-        })
-        .catch(e => dispatch({type:"update",value:"", list:[]}))
-      }
-    }
-    
-  }, [input, state.list])
-
   return (
     <Container onFocus={handleFocusChange} onBlur={handleBlurChange} onClick={() => inputRef.current.focus()} className={!display && "curve"}
     ref={searchRef} onMouseEnter={handleMouseIn} onMouseLeave={handleMouseOut}
@@ -82,13 +67,13 @@ export const Github = () => {
       </SearchComponent>
       {<ul className={display ? "": "hide"}>
         {
-          ((state.searchBar.length === 0 || state.searchBar[0] === "No result") && input && input !== "")?
-            <li className="no-result">No Username like "{input}" on GitHub</li> :
+          ((!userQueryList || userQueryList.length === 0 ) && input && input !== "")?
+            <li className="no-result">No login like "{input}" on GitHub</li> :
             input && input !== "" &&
-            state.searchBar.map((items, key) =>
+            userQueryList.map((items, key) =>
               <li key={key}>
-              <Link to={items.type === "Organization"? "/github/org/"+items.login:"/github/"+items.login}>
-                <img src={items.avatar_url} alt="profile"></img>
+              <Link to={items.__typename === "Organization"? "/github/org/"+items.login:"/github/"+items.login}>
+                <img src={items.avatarUrl} alt="profile"></img>
                 <p>{items.login}</p>
               </Link>
               </li>
