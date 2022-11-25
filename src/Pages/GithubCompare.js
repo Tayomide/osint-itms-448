@@ -10,7 +10,6 @@ import { DropdownMenu } from "../Components/DropdownMenu";
 
 export const GithubCompare = () => {
   const GithubApi = require("../API/GithubApi")
-  const [data, setData] = useState({message:"Loading..."})
   const [user, setUser] = useState("")
   const [userList, setUserList] = useState(localStorage["userList"] ? JSON.parse(localStorage["userList"]) : [])
   const [newUser, setNewUser] = useState(false)
@@ -61,44 +60,6 @@ export const GithubCompare = () => {
     if(newUser)inputRef.current.focus()
     else setUser("")
   }, [newUser])
-
-  useEffect(() => {
-    if(queryType !== ""){
-      const dataFile = {}
-
-      // Get User
-      GithubApi.getUser(queryType)
-      .then(response => response.clone().json())
-      .then(response => dataFile["User_Data"] = response)
-      .catch(e => console.error(e))
-
-      // Get Commits
-      GithubApi.getCommits()
-      .then(response => response.clone().json())
-      .then(response => dataFile["Commits"] = response)
-      .catch(e => console.error(e))
-
-      // Get Followers
-      GithubApi.getFollowers(queryType)
-      .then(response => response.clone().json())
-      .then(response => dataFile["Followers"] = response)
-      .catch(e => console.error(e))
-
-      // Get Repos
-      GithubApi.getRepos(queryType)
-      .then(response => response.clone().json())
-      .then(response => dataFile["Repositories"] = response)
-      .catch(e => console.error(e))
-
-      // Get Organizations
-      GithubApi.getOrgs(queryType)
-      .then(response => response.clone().json())
-      .then(response => dataFile["Organizations"] = response)
-      .catch(e => console.error(e))
-
-      setData(dataFile)
-    }
-  }, [queryType, GithubApi])
 
   useEffect(() => {
     let queryList = []
