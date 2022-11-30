@@ -26,7 +26,7 @@ export const SmartCarousel = ({list, type}) => {
   useEffect(() => {
     const tempVariable = CarouselRef.current
     if(CarouselRef.current && CarouselRef.current.scrollWidth > CarouselRef.current.clientWidth)setOverflow(true)
-    if(tempVariable && tempVariable.childNodes && tempVariable.childNodes.length > 0)setGap(tempVariable?.childNodes[1].offsetWidth)
+    if(tempVariable && tempVariable.childNodes && tempVariable.childNodes.length > 1)setGap(tempVariable?.childNodes[1].offsetWidth)
   }, [])
   return (
     <Container ref={CarouselRef} className={!overflow?"pad":""}>
