@@ -275,8 +275,8 @@ const Container = styled.div`
         width: inherit
       }
       @media screen and (max-width: 500px){
-        min-height: 120vh;
-        max-height: 200vh;
+        height: 150vh;
+        max-height: 150vh;
       }
       box-shadow: 0px 1px 3px 0px #00000030;
       padding: 0.5em;
