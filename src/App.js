@@ -44,6 +44,10 @@ const Container = styled.div`
   @media screen and (max-width: 1000px) {
     flex-direction: column;
   }
+  @media screen and (max-width: 1000px) {
+    height: max-content;
+    min-height: 100%;
+  }
   &.light{
     --main-bg-color: #42A5F5;
     --secondary-bg-color: #69B7F7;
