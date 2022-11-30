@@ -47,7 +47,6 @@ export const SmartCarouselChild = ({obj, type}) => {
 
 const Container = styled.li`
   align-content: flex-start;
-  border: 1px solid #e6e6e6;
   border-radius: 0.3em;
   display: flex;
   flex-direction: row;
@@ -57,7 +56,7 @@ const Container = styled.li`
   padding: 1em 0.8em 0.3em 0.8em;
   gap: 0.6em 0.4em;
   background-color: var(--main-color);
-  box-shadow: 0px 1px 3px 0px #00000030;
+  box-shadow: 0px 1px 3px 0px var(--default-color);
   .header{
     height: max-content;
     display: flex;
@@ -78,7 +77,7 @@ const Container = styled.li`
     }
     a{
       font-size: 1.5em;
-      color: #161656;
+      color: var(--header-color);
       padding-left: 0.4em;
       font-weight: bold;
     }
@@ -93,7 +92,7 @@ const Container = styled.li`
       padding: 0.3em 0.4em;
       color: white;
       background-color: var(--main-bg-color);
-      box-shadow: 0px 1px 3px 0px #00000030;
+      box-shadow: 0px 1px 3px 0px var(--default-color);
     }
   }
 `

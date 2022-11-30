@@ -29,7 +29,6 @@ export const GithubUserData = ({data}) => {
 }
 
 const Container = styled.li`
-  border: 1px solid #efefef;
   border-radius: 0.4em;
   width: 100%;
   padding: 1em;

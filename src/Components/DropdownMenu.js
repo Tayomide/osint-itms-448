@@ -55,7 +55,7 @@ const Container = styled.div`
         width: 100%;
       }
       :hover{
-        background-color: #d4d3d3;
+        background-color: var(--main-bg-color);
       }
     }
   }

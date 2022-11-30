@@ -13,6 +13,6 @@ const Container = styled.p`
   text-transform: capitalize;
   padding: 0.3em 0.7em;
   border-radius: 1em;
-  background-color: white;
+  background-color: var(--default-color);
   box-shadow: 0px 1px 3px 1px #00000010;
 `

@@ -133,7 +133,7 @@ const Container = styled.div`
   .tag{
     padding: 1em 2em;
     height: max-content;
-    color: #707070;
+    color: var(--header-color);
   }
   > .header{
     display: flex;
@@ -158,11 +158,11 @@ const Container = styled.div`
       }
       .org-name{
         align-items: flex-end;
-        color: #161656;
+        color: var(--header-color);
         display: inline-flex;
         flex-direction: row;
         a{
-          color: #161656;
+          color: var(--header-color);
         }
         button{
           padding: 0 0 0.17em 0;
@@ -171,7 +171,8 @@ const Container = styled.div`
       }
       p{
         font-weight: bold;
-        color: #908a8a;
+        color: var(--header-color);
+        opacity: 0.5;
       }
     }
   }

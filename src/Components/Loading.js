@@ -23,8 +23,7 @@ const Container = styled.ul`
   animation-iteration-count: infinite;
   animation-name: placeHolderShimmer;
   animation-timing-function: linear;
-  background: #f6f7f8;
-  background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
+  background: linear-gradient(to right, var(--main-color) 8%, #dddddd80 18%, var(--main-color) 33%);
   background-size: 1000px 104px;
   display: flex;
   flex-direction: row;
@@ -35,7 +34,6 @@ const Container = styled.ul`
   margin: 0 0 0 0.4em;
   >li{
     align-content: flex-start;
-    border: 1px solid #e6e6e6;
     border-radius: 5px;
     display: flex;
     flex-direction: row;
@@ -44,6 +42,6 @@ const Container = styled.ul`
     min-width: 25em;
     padding: 1em 0.8em 0.3em 0.8em;
     gap: 0.6em 0.4em;
-    box-shadow: 0 0 0 10px white;
+    box-shadow: 0 0 0 10px var(--default-color);
   }
 `

@@ -237,8 +237,10 @@ export const GithubCompare = () => {
           <ul>
             {downloadStats &&
               Object.keys(downloadStats).map((key, idx) => <li key={idx}>
-                <p>{key}</p>
-                <button onClick={() => handleClickOne(key)}><FileDownloadOutlinedIcon /></button>
+                <button onClick={() => handleClickOne(key)}>
+                  <p>{key}</p>
+                  <FileDownloadOutlinedIcon />
+                </button>
               </li>)
             }
           </ul> 
@@ -257,7 +259,6 @@ const Container = styled.div`
     color: inherit;
   }
   .chart{
-    border: 1px solid #e7e7e7;
     border-radius: 0.3em;
     padding: 0.3em 0.4em;
   }
@@ -303,18 +304,21 @@ const Container = styled.div`
         grid-template-columns: repeat(2, 1fr);
         grid-gap: 1em;
         padding-top: 1em;
-        li{
-          align-items: center;
-          border-radius: 0.4em;
-          padding: 0.4em;
+      li{
+        button{
           display: flex;
           flex-direction: row;
+          width: 100%;
           justify-content: space-between;
+          align-items: center;
+          border-radius: 0.4em;
+          padding: 0.5em 0.7em;
           background-color: var(--main-bg-color);
-          box-shadow: 0px 1px 3px 0px #00000030;
+          box-shadow: 0px 1px 3px 0px #00000066;
           color: white;
-          button{
-            height: min-content;
+          p{
+            font-size: 1.2em;
+          }
             svg{
               height: auto;
               height: min-content;
@@ -455,7 +459,8 @@ const InputContainer = styled.div`
       :hover{
         height: auto;
         border-radius: 50%;
-        background-color: #dedddd;
+        background-color: var(--main-bg-color);
+        opacity: 0.9;
       }
       
     }
@@ -509,7 +514,7 @@ const InputContainer = styled.div`
           }
         }
         :hover{
-          background-color: #d4d3d3;
+          background-color: var(--main-bg-color);
         }
       }
     }
@@ -555,7 +560,7 @@ const InputContainer = styled.div`
         font-weight: bold;
       }
       :hover{
-        background-color: #d4d3d3;
+        background-color: var(--main-bg-color);
       }
     }
   }

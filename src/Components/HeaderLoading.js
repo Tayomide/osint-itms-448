@@ -53,14 +53,14 @@ const Container = styled.ul`
       width: 40px;
       margin-top: 10px;
       margin-right: 10px;
-      box-shadow: 0 0 0 10px white;
+      box-shadow: 0 0 0 10px var(--default-color);
     }
     .third{
       background-color: #ffffff;
       height: 5px;
       width: 115px;
       margin-top: 35px;
-      box-shadow: 0 0 0 0 white;
+      box-shadow: 0 0 0 0 var(--default-color);
     }
   }
 `

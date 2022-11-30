@@ -71,7 +71,7 @@ const Container = styled.ul`
   }
   .arrow{
     align-items: center;
-    background-color: #ffffff;
+    background-color: var(--default-color);
     display: flex;
     height: auto;
     padding: 0 1em;

@@ -86,15 +86,16 @@ export const Github = () => {
 
 const Container = styled.div`
   height: max-content;
-  max-height: 80%;
+  max-height: calc(100vh - 6em);
   width: 40%;
   display: flex;
   flex-direction: column;
   position: absolute;
   left: 30%;
-  top: 15%;
-  box-shadow: 1px 3px 6px 2px rgb(220 220 220);
-  background-color: var(--secondary-bg-color);
+  top: 6em;
+  box-shadow: 1px 3px 6px 2px var(--default-color);
+  background-color: var(--main-bg-color);
+  opacity: 0.8;
   >.title{
     position: fixed;
     top: 2.8em;
@@ -113,6 +114,11 @@ const Container = styled.div`
       top: -1.8em;
       h1{
         font-size: 1.1em;
+      }
+    }
+    @media screen and (max-width: 220px) {
+      h1{
+        width: min-content;
       }
     }
   }
@@ -164,13 +170,11 @@ const Container = styled.div`
     left: 0;
     margin: 0 5%; 
   }
-  @media screen and (max-width: 200px) {
-    top: 20%;
+  @media screen and (max-width: 350px) {
+    top: 14em;
+    max-height: calc(100vh - 14em);
     .title{
       top: -4.2em;
-      h1{
-        width: min-content;
-      }
     }
   }
 `
@@ -194,8 +198,6 @@ const SearchComponent = styled.div`
     font-size: 1.2em;
     width: inherit;
     background-color: inherit;
-  }
-  @media screen and (max-width: 200px) {
-
+    color: var(--header-color)
   }
 `

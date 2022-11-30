@@ -15,7 +15,6 @@ export const GithubUserStats = ({data}) => {
 }
 
 const Container = styled.li`
-  border: 1px solid #efefef;
   border-radius: 0.4em;
   width: 100%;
   padding: 1em;
@@ -36,7 +35,7 @@ const Container = styled.li`
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-      background-color: white;
+      background-color: var(--default-color);
       box-shadow: 0px 1px 3px 0px #00000030;
       p{
         line-height: 1.5em;

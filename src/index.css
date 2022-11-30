@@ -5,14 +5,14 @@
   height: inherit
 }
 
-:root {
-  /* #0780E4 */
-  /* #6fa3ee */
-  /* #88b5f1 */
+/* :root {
+  #0780E4
+  #6fa3ee
+  #88b5f1
   --main-bg-color: #42A5F5;
   --secondary-bg-color: #69B7F7;
   --main-color: #F8F8F8;
-}
+} */
 
 html{
   height: 100vh;

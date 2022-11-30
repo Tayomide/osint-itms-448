@@ -23,7 +23,6 @@ export const GithubUserGraph = ({data}) => {
 }
 
 const Container = styled.li`
-  border: 1px solid #efefef;
   border-radius: 0.4em;
   width: max-content;
   padding: 1em;

@@ -4,13 +4,14 @@ import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { NavLink, matchPath, useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useEffect } from 'react';
+import { DarkLightContext } from '../Components/DarkLightContext';
 
 export const Navbar = () => {
   const location = useLocation()
   const [show, setShow] = useState()
-
+  const { mode, setMode} = useContext(DarkLightContext)
   useEffect(() => {
     setShow(matchPath({
       path: "/github/:id",
@@ -49,14 +50,16 @@ export const Navbar = () => {
         className='github'/>
         <p>Compare</p>
       </NavLink>
-      <button className={show && show.params.id !== "compare" ? "active" : ""}>
+      <button className={show && show.params.id !== "compare" ? "active" : ""} 
+      onClick={() => setMode(mode === "light"? "dark":"light")}
+      >
         <GitHubIcon
         sx={{
           width:"50px",
           height:"50px"
         }}
         className='github'/>
-        <p>Github</p>
+        <p>Github {mode}</p>
       </button>
     </Container>
   )
@@ -76,6 +79,7 @@ const Container = styled.nav`
     color: inherit;
     p{
       display: none;
+      text-transform: capitalize;
     }
     .github, .home{
       padding: 0.25em;
@@ -128,8 +132,12 @@ const Container = styled.nav`
     }
   }
   @media screen and (max-width: 350px) {
-    button{
-      display: none;
+    flex-direction: column;
+    height: max-content;
+    a, button{
+      width: 100%;
+      height: 3em;
+      justify-content: center;
     }
   }
   @media screen and (max-width: 220px) {
