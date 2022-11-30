@@ -29,6 +29,8 @@ const Container = styled.li`
   padding: 1em;
   font-size: 1.05em;
   grid-column: -1 / -3;
+  background-color: var(--main-color);
+  box-shadow: 0px 1px 3px 0px #00000030;
   > p{
     padding: 0 0 0.6em 0;
     font-size: 1.1em;
@@ -62,19 +64,19 @@ const Container = styled.li`
       }
     }
     .intense-0{
-      background-color: rgb(116 208 101);
+      background-color: #98cdf9;
     }
     .intense-1{
-      background-color: rgb(90 164 81);
+      background-color: #69b7f7;
     }
     .intense-2{
-      background-color: rgb(52 107 57);
+      background-color: #42a4f5;
     }
     .intense-3{
-      background-color: rgb(46 77 54);
+      background-color: #1a8ff0;
     }
     .intense-4{
-      background-color: rgb(24 27 33);
+      background-color: #0780e4;
     }
     @media screen and (max-width: 750px){
       grid-template-columns: repeat(7, 1fr);

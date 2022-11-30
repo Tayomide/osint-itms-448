@@ -11,7 +11,8 @@ const Container = styled.p`
   width: max-content;
   height: max-content;
   text-transform: capitalize;
-  padding: 0.3em;
-  border: 1px solid #efefef;
+  padding: 0.3em 0.7em;
   border-radius: 1em;
+  background-color: white;
+  box-shadow: 0px 1px 3px 1px #00000010;
 `

@@ -2,21 +2,43 @@ import React from 'react'
 import styled from 'styled-components'
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
-// import GitHubIcon from '@mui/icons-material/GitHub';
-import { NavLink } from 'react-router-dom';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import { NavLink, matchPath, useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 export const Navbar = () => {
+  const location = useLocation()
+  const [show, setShow] = useState()
+
+  useEffect(() => {
+    setShow(matchPath({
+      path: "/github/:id",
+      exact: true,
+      strict: true
+    }, location.pathname) || matchPath({
+      path: "/github/org/:id",
+      exact: true,
+      strict: true
+    }, location.pathname))
+  }, [location])
   return (
     <Container>
-      <a href="/">
+      <NavLink to=""
+        activeclassname="active"
+        exact="true"
+        end
+      >
         <HomeOutlinedIcon sx={{
-          width:"35px",
-          height:"35px"
-        }}/>
+          width:"50px",
+          height:"50px"
+        }}
+        className="home"
+        />
         <p>Home</p>
-      </a>
+      </NavLink>
       <NavLink to="/github/compare"
-        className={({ isActive }) => isActive ? "active" : undefined}
+        activeclassname="active"
         exact="true"
       >
         <CompareArrowsIcon
@@ -27,42 +49,65 @@ export const Navbar = () => {
         className='github'/>
         <p>Compare</p>
       </NavLink>
+      <button className={show && show.params.id !== "compare" ? "active" : ""}>
+        <GitHubIcon
+        sx={{
+          width:"50px",
+          height:"50px"
+        }}
+        className='github'/>
+        <p>Github</p>
+      </button>
     </Container>
   )
 }
 
 const Container = styled.nav`
-  background-color: rgb(251 251 251);
+  background-color: var(--main-bg-color);
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 5em;
   padding-top: 1.3em;
-  a{
+  box-shadow: 1px 0px 4px 0px #0000004f;
+  /* color: white; */
+  a, button{
     height: max-content;
     color: inherit;
     p{
       display: none;
     }
-    .github{
+    .github, .home{
       padding: 0.25em;
       margin-top: 1em;
       border-radius: 0.3em;
     }
+    .home{
+      margin: 0;
+      /* padding: 0.3em;
+      border-radius: 0.3em;
+      box-shadow: 0px 2px 2px 0px #5f5f5f; */
+    }
+  }
+  svg{
+    color: white;
   }
   .active svg{
-    background-color: rgb(239 239 239);
+    background-color: var(--secondary-bg-color);
+    box-shadow: 0px 1px 3px 0px #00000066;
   }
   @media screen and (max-width: 1000px) {
     width: 100vw;
     height: 3em;
     flex-direction: row;
     padding: 0;
-    a{
+    a, button{
       height: 3em;
       display: inline-flex;
       align-items: center;
       padding: 0 2em;
+      font-size: inherit;
+      
       svg{
         display: none;
       }
@@ -75,15 +120,20 @@ const Container = styled.nav`
         margin-left: 1em;
       }
       :hover{
-        background-color: rgb(231, 231, 231, 0.8);
+        background-color: var(--secondary-bg-color);
       }
     }
     .active{
-      background-color: rgb(231 231 231);
+      background-color: var(--secondary-bg-color);
+    }
+  }
+  @media screen and (max-width: 350px) {
+    button{
+      display: none;
     }
   }
   @media screen and (max-width: 220px) {
-    a{
+    a, button{
       padding: 0;
       width: inherit;
       justify-content: center;

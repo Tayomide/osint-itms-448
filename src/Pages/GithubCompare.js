@@ -267,22 +267,26 @@ const Container = styled.div`
     gap: 1em;
     padding: 0 1em;
     .chart{
-      height: 70vh;
+      max-height: calc(100vh - 7em);
       width: calc(70vw - 5em);
       canvas{
         height: inherit!important;
         width: inherit
       }
       @media screen and (max-width: 500px){
-        height: 100vh;
+        min-height: 120vh;
+        max-height: 200vh;
       }
+      box-shadow: 0px 1px 3px 0px #00000030;
+      padding: 0.5em;
     }
     .conditions{
-      border: 1px solid #efefef;
       border-radius: 0.4em;
       width: -webkit-fill-available;
       width: -moz-available;
       padding: 1em;
+      background-color: var(--main-color);
+      box-shadow: 0px 1px 3px 0px #00000030;
       >div{
         > p{
           padding: 0 0 0.6em 0;
@@ -301,12 +305,14 @@ const Container = styled.div`
         padding-top: 1em;
         li{
           align-items: center;
-          border: 1px solid #efefef;
           border-radius: 0.4em;
           padding: 0.4em;
           display: flex;
           flex-direction: row;
           justify-content: space-between;
+          background-color: var(--main-bg-color);
+          box-shadow: 0px 1px 3px 0px #00000030;
+          color: white;
           button{
             height: min-content;
             svg{
@@ -367,11 +373,12 @@ const InputContainer = styled.div`
   }
   .add-user-input{
     align-items: center;
-    background-color: #efefef;
+    background-color: var(--main-color);
     border-radius: 0.2em 0.2em 0.2em 0.2em;
     display: flex;
     flex-direction: row;
     height: 2.3em;
+    box-shadow: 0px 1px 3px 0px #00000030;
     input[type="text"]{
       background-color: transparent;
       font-size: 1em;
@@ -390,11 +397,12 @@ const InputContainer = styled.div`
   }
   .add-user-button{
     align-items: center;
-    background-color: #efefef;        
+    background-color: var(--main-color);        
     display: flex;
     flex-direction: row;
     height: 2.3em;
     border-radius: 0.2em 0.2em 0.2em 0.2em;
+    box-shadow: 0px 1px 3px 0px #00000030;
     button{
       align-items: center;
       display: inline-flex;
@@ -408,7 +416,7 @@ const InputContainer = styled.div`
   }
   .user{
     align-items: center;
-    background-color: #efefef;
+    background-color: var(--main-color);
     border-radius: 0.2em 0.2em 0.2em 0.2em;
     cursor: pointer;
     display: flex;
@@ -418,6 +426,7 @@ const InputContainer = styled.div`
     position: relative;
     width: 8em;
     z-index: 0;
+    box-shadow: 0px 1px 3px 0px #00000030;
     > a{
       align-items: center;
       color: inherit;
@@ -453,7 +462,7 @@ const InputContainer = styled.div`
   }
   .dropdown-user, .dropdown-user-search{
     align-items: center;
-    background-color: #efefef;
+    background-color: var(--main-color);
     border-radius: 0.2em 0.2em 0.2em 0.2em;
     cursor: pointer;
     display: none;
@@ -463,6 +472,7 @@ const InputContainer = styled.div`
     padding: 0 1em;
     position: relative;
     width: 8em;
+    box-shadow: 0px 1px 3px 0px #00000030;
     ul{
       background-color: inherit;
       border-radius: 0.2em 0.2em 0.2em 0.2em;

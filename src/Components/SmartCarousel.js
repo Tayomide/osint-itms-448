@@ -56,6 +56,7 @@ const Container = styled.ul`
   height: max-content;
   overflow-x: scroll;
   width: 100%;
+  margin: 0 0 0 0.4em;
   /* Hide Scrollbar */
   &::-webkit-scrollbar {
     display: none;

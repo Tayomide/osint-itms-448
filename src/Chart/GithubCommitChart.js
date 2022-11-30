@@ -24,7 +24,8 @@ const sumReduce = (arr) => {
 
 export const getData = async (user, graph) => {
   const labels = []
-  const colorScheme = ['rgba(255, 99, 132, 0.5)', 'rgba(99, 255, 132, 0.5)', 'rgba(99, 132, 255, 0.5)', 'rgba(255, 132, 99, 0.5)', 'rgba(132, 99, 255, 0.5)']
+  const colorScheme = ['#0780E4', 'rgba(99, 255, 132, 0.5)', '#00FFFF80', 'rgba(255, 132, 99, 0.5)', '#98CDF9']
+  // ['#98CDF9', '#69B7F7', '#42A4F5', '#1A8FF0', ]
   const dataset = []
   switch(graph){
     case "commits":

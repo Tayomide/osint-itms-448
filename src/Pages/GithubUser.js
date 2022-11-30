@@ -217,6 +217,10 @@ const Container = styled.div`
     height: max-content;
     padding: 1em 1em;
     align-items: center;
+    background-color: var(--main-color);
+    box-shadow: 0px 1px 3px 0px #00000030;
+    border-radius: 1em;
+    margin: 2em;
     li{
       width: max-content;
       height: max-content;
@@ -280,6 +284,10 @@ const Container = styled.div`
   @media screen and (max-width: 220px){
     .user-stats{
       padding: 0;
+    }
+    .header{
+      margin: 1em 0;
+      border-radius: 0;
     }
   }
   

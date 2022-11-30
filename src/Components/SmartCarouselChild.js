@@ -56,6 +56,8 @@ const Container = styled.li`
   min-width: 25em;
   padding: 1em 0.8em 0.3em 0.8em;
   gap: 0.6em 0.4em;
+  background-color: var(--main-color);
+  box-shadow: 0px 1px 3px 0px #00000030;
   .header{
     height: max-content;
     display: flex;
@@ -82,14 +84,16 @@ const Container = styled.li`
     }
     button{
       align-items: center;
-      border: 1px solid #e7e7e7;
       border-radius: 0.3em;
       display: inline-flex;
       font-size: 1em;
       font-weight: bold;
-      height: 2.3em;
+      /* height: 2.3em; */
       justify-content: center;
-      padding: 0 0.4em 0 0.4em;
+      padding: 0.3em 0.4em;
+      color: white;
+      background-color: var(--main-bg-color);
+      box-shadow: 0px 1px 3px 0px #00000030;
     }
   }
 `

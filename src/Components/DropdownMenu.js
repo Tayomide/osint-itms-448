@@ -23,7 +23,7 @@ export const DropdownMenu = ({type, setType, list}) => {
 
 const Container = styled.div`
   align-items: center;
-  background-color: #efefef;
+  background-color: var(--main-color);
   border-radius: 0.2em 0.2em 0.2em 0.2em;
   cursor: pointer;
   display: flex;
@@ -33,6 +33,7 @@ const Container = styled.div`
   padding: 0 1em;
   position: relative;
   width: 10em;
+  box-shadow: 0px 1px 3px 0px #00000030;
   ul{
     background-color: inherit;
     border-radius: 0.2em 0.2em 0.2em 0.2em;
@@ -41,6 +42,7 @@ const Container = styled.div`
     left: 0;
     right: 0;
     top: 3em;
+    box-shadow: 0px 1px 3px 0px #00000030;
     li{
       cursor: pointer;
       display: flex;

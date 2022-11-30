@@ -94,6 +94,7 @@ const Container = styled.div`
   left: 30%;
   top: 15%;
   box-shadow: 1px 3px 6px 2px rgb(220 220 220);
+  background-color: var(--secondary-bg-color);
   >.title{
     position: fixed;
     top: 2.8em;
@@ -130,7 +131,7 @@ const Container = styled.div`
         padding: 0.3em;
       }
       :hover{
-        background-color: #d3d3d3;
+        background-color: var(--main-bg-color);
       }
       a{
         display: flex;
@@ -192,6 +193,7 @@ const SearchComponent = styled.div`
     height: auto;
     font-size: 1.2em;
     width: inherit;
+    background-color: inherit;
   }
   @media screen and (max-width: 200px) {
 

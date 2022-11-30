@@ -9,6 +9,7 @@ import {
   Title,
   Tooltip,
   Legend,
+  Filler,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
@@ -18,7 +19,8 @@ ChartJS.register(
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  Filler
 );
 
 export const GithubChart = ({user, type}) => {
@@ -34,7 +36,7 @@ export const GithubChart = ({user, type}) => {
     <Container className="chart">
       {data &&
       <>
-        <Bar className="desktop" options={{...CommitGraph.getOptions(), maintainAspectRatio : false}} data={data} />
+        <Bar className="desktop" backgroundFill="#F5DEB3" options={{...CommitGraph.getOptions(), maintainAspectRatio : false, backgroundFill:"#F5DEB3"}} data={data} />
         <Bar className="mobile" options={{...CommitGraph.getOptions(), indexAxis: 'y', maintainAspectRatio : false}} data={data} />
       </>
       }

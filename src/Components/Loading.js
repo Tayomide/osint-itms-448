@@ -32,6 +32,7 @@ const Container = styled.ul`
   height: max-content;
   overflow-x: scroll;
   width: 100%;
+  margin: 0 0 0 0.4em;
   >li{
     align-content: flex-start;
     border: 1px solid #e6e6e6;
