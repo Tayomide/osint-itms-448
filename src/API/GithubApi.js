@@ -31,7 +31,7 @@ export const getCommitGraph = async (user) => {
 
   let Authorization;
 
-  await fetch(`/.netlify/functions/github`, options)
+  await fetch(`./.netlify/functions/github`, options)
   .then(response => response.json())
   .then(response => Authorization = `Bearer ${response.GITHUB_TOKEN}`)
 
