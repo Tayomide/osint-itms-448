@@ -31,7 +31,7 @@ export const getCommitGraph = async (user) => {
 
   let Authorization;
 
-  await fetch(`./.netlify/functions/github`, options)
+  await fetch(`https://osintiit.netlify.app/.netlify/functions/github`, options)
   .then(response => response.json())
   .then(response => Authorization = `Bearer ${response.GITHUB_TOKEN}`)
 
@@ -57,7 +57,7 @@ export const getRepos = (user) => fetch(`https://api.github.com/users/${user}/re
 
 export const getUser = (user) => fetch(`https://api.github.com/users/${user}`, options)
 
-export const getVariables = () => fetch(`/.netlify/functions/github`, options)
+export const getVariables = () => fetch(`https://osintiit.netlify.app/.netlify/functions/github`, options)
 
 export const getOrg = async (org) => {
   const query = `
@@ -128,7 +128,7 @@ export const getOrg = async (org) => {
 
   let Authorization;
 
-  await fetch(`/.netlify/functions/github`, options)
+  await fetch(`https://osintiit.netlify.app/.netlify/functions/github`, options)
   .then(response => response.json())
   .then(response => Authorization = `Bearer ${response.GITHUB_TOKEN}`)
 
@@ -262,7 +262,7 @@ export const getUserData = async (user) => {
 
   let Authorization;
 
-  await fetch(`/.netlify/functions/github`, options)
+  await fetch(`https://osintiit.netlify.app/.netlify/functions/github`, options)
   .then(response => response.json())
   .then(response => Authorization = `Bearer ${response.GITHUB_TOKEN}`)
 
@@ -301,7 +301,7 @@ export const findUserNodes = async (user) => {
 
   let Authorization;
 
-  await fetch(`/.netlify/functions/github`, options)
+  await fetch(`https://osintiit.netlify.app/.netlify/functions/github`, options)
   .then(response => response.json())
   .then(response => Authorization = `Bearer ${response.GITHUB_TOKEN}`)
 
@@ -345,7 +345,7 @@ export const findAccountNodes = async (user) => {
 
   let Authorization;
 
-  await fetch(`/.netlify/functions/github`, options)
+  await fetch(`https://osintiit.netlify.app/.netlify/functions/github`, options)
   .then(response => response.json())
   .then(response => Authorization = `Bearer ${response.GITHUB_TOKEN}`)
 
